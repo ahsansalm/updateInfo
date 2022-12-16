@@ -29,6 +29,9 @@
                                     <th scope="col" class="text-white px-2">Statut</th>
                                     <th scope="col" class="text-white px-2">Dispositif Statut</th>
                                     <th scope="col" class="text-white px-2">Prix</th>
+                                    
+                                    <th scope="col" class="text-white">Nous. Payé</th>
+                                    <th scope="col" class="text-white">Un d. Payé</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,7 +65,22 @@
                                             @else
                                             <td><span class=" px-2 text-white badge bagde-sm bg-danger">{{$device->neww->admin_status}}</span></td>
                                             @endif
-                                            <td>{{$device->totalPrice}}</td>
+                                            <td>{{$device->totalPrice}}</td>    
+                                             @if($device->payStatus =='Payé')
+                                            <td><span class="badge bagde-sm bg-dark">Payé</span></td>
+                                             @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->payStatus}}</span></td>
+                                            @endif
+
+
+                                            @if($device->adminPaid =='Payé')
+                                            <td><span class="badge bagde-sm bg-dark">Payé</span></td>
+                                             @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->adminPaid}}</span></td>
+                                            @endif
+
+
+
                                         </tr>
                                 @endforeach
                             </tbody>

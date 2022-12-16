@@ -31,6 +31,7 @@
                                 <th scope="col" class="text-white">Statut</th>
                                 <th scope="col" class="text-white">Payer Statut</th>
                                 <th scope="col" class="text-white">Payer</th>
+                                    <th scope="col" class="text-white">Un d. Payé</th>
                                 <th scope="col" class="text-white" style="width: 80px;">Option</th>
                             </tr>
                         </thead>
@@ -55,14 +56,23 @@
                                     @else
                                     <td><span class="badge badge-danger">{{$invoice->payStatus}}</span></td>
                                     @endif
+
+                                    @if($invoice->adminPaid =='Payé')
+                                    <td><span class="badge bagde-sm bg-primary">Payé</span></td>
+                                        @else
+                                    <td><span class="badge bagde-sm bg-danger">{{$invoice->adminPaid}}</span></td>
+                                    @endif
+
+
                                     <td>
-                                            <a href="#myModal"  data-toggle="modal" >
-                                                <button type="button" class="btn btn-success btn-sm">Payer</button>
-                                            </a>
+                                        <a href="{{url('/Mybill/Payer/detail/'.$invoice->id)}}" >
+                                            <button type="button" class="btn btn-success btn-sm">Payer</button>
+                                        </a>
 
 
-                                                                                        <!-- custom delte button -->
-<div id="myModal" class="modal fade">
+<!-- custom delte button -->
+
+<!-- <div id="myModal" class="modal fade">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
 			<div class="modal-header flex-column">
@@ -85,7 +95,8 @@
 			</div>
 		</div>
 	</div>
-</div> 
+</div>  -->
+
 <!-- end custom delte button -->
 
 

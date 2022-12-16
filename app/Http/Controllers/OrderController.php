@@ -5,6 +5,7 @@ use App\Models\Parcel;
 use Auth;
 use DB;
 use App\Models\Payment;
+use App\Models\user_total_credit;
 use Illuminate\Http\Request;
 use App\Models\Invoices;
 
@@ -89,6 +90,7 @@ class OrderController extends Controller
         ]);
         Invoices::where('productId',$id)->update([
             'status' => 'Approuvé',
+            'date' => date('Y-m-d'),
         ]);
         $notification = array(
             'message' => 'Commande approuvée avec succès!',
@@ -252,6 +254,20 @@ class OrderController extends Controller
 
 
 
+         // pay order
+         public function payOrder(Request $request){
+    
+    
+            Invoices::where('productId',$request->userId)->update([
+                'adminPaid' => 'Payé',
+            ]);
+            return response(['success','Retour au client']);
+        }
+
+
+
+
+
 
     // quotation order
     public function userQuotes(){
@@ -328,9 +344,7 @@ class OrderController extends Controller
         $Parcel = Parcel::where('userId' , $id)->first();
         $Invoice = Invoices::where('user_id' , $id)->first();
         $totalPayment =
-        $payment = Payment::where('user_id',$id)
-                ->selectRaw('SUM(payments.amount) AS sum')
-                ->first()->sum;
+        $payment = user_total_credit::where('user_id',$id)->first();
         return view("wallet.index",compact('Invoice','payment','Parcel'));
     }
 

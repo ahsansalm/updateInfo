@@ -21,11 +21,17 @@
                   <!-- problems of users -->
                   <?php $role = Auth::user()->role_as; ?>
                   @if($role == 1)
-                  
+                   <!-- dashboard -->
+                   <li  class="has-sub {{ Request::is('home') ? 'active':''; }}" >
+                    <a class="sidenav-item-link" href="{{url('/home')}}" >
+                      <i class="mdi mdi-view-dashboard-outline"></i>
+                      <span class="nav-text">Tableau de bord</span> 
+                    </a>
+                  </li>
 
                    
-                  <li  class="has-sub {{ Request::is('home') ? 'active':''; }}" >
-                    <a class="sidenav-item-link" href="{{url('/home')}}" >
+                  <li  class="has-sub {{ Request::is('reporting') ? 'active':''; }}" >
+                    <a class="sidenav-item-link" href="{{url('/reporting')}}" >
                     <i class="fa fa-user" style="font-size:24px"></i>
                       <span class="nav-text">Rapports</span> 
                     </a>

@@ -44,8 +44,17 @@
     </div>
 
     <div class="col-12 mt-3">
-        <input type="text" class="form-control" id="searchOrder" placeholder="Recherche...">
+            <form action="{{url('today/report/search')}}">
+                <div class="row">
+                        <div class="col-10">
+                            <input type="search" class="form-control"  name="search" placeholder="Rechercher une commande par nom de produit...">
+                        </div>
+                        <div class="col-2">
+                         <button type="submit" class="btn btn-block btn-primary">Chercher</button>
 
+                        </div>
+                    </div>
+               </form>
                         <table class="table mt-2">
                             <thead style="background: rgb(12, 23, 65);">
                                 <tr>
@@ -72,7 +81,7 @@
                                             <td>{{$device->neww->product}}</td>
                                             <td>{{$device->servicedata->service}}</td>
                                             <td><span class="badge bagde-sm bg-success">{{$device->status}}</span></td>
-                                            <td>{{$device->servicedata->sale}} €</td>
+                                            <td>{{$device->totalPrice}} €</td>
                                             <td>{{$device->servicedata->purchase_price}} €</td>
                                             <td>{{$device->date}} </td>
                                         </tr>

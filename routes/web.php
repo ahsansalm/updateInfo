@@ -259,6 +259,11 @@ Route::post('/order/waiting',[OrderController::class, 'waitingOrder']);
 Route::post('/order/repair',[OrderController::class, 'repairOrder']);
 // return order
 Route::post('/order/return',[OrderController::class, 'returnOrder']);
+
+// pay order
+Route::post('/order/pay',[OrderController::class, 'payOrder']);
+
+
 // quotes order
 Route::get('/userQuotes',[OrderController::class, 'userQuotes'])->name('userQuotes')->middleware('userQuotes');
 // quotes approved
@@ -284,6 +289,8 @@ Route::get('/MyBill',[BillController::class, 'myBill'])->name('myBill');
 Route::get('/Mybill/Detail/{id}',[BillController::class, 'EditBill'])->name('EditBill');
 // search bill
 Route::get('search/bill',[BillController::class, 'searchbill']);
+// /Mybill/Payer/Detail
+Route::get('/Mybill/Payer/detail/{id}',[BillController::class, 'PayerBillDetail'])->name('PayerBillDetail');
 
 // bill edit page
 Route::get('/Mybill/Payer/{id}',[BillController::class, 'PayerBill'])->name('PayerBill');
@@ -479,14 +486,31 @@ Route::get('/inventory/edit/{id}',[inventoryController::class, 'inventoryedit'])
 Route::get('/reporting',[reportingController::class, 'reporting']);
 // /today/report
 Route::get('/today/report',[reportingController::class, 'todayreport']);
+// search /today/report
+Route::get('/today/report/search',[reportingController::class, 'searchToday']);
+
+
+
+
+// search /today/credit/report
+Route::get('/today/credit/report/search',[reportingController::class, 'searchTodaycredit']);
+// search /monthly/credit/report
+Route::get('/monthly/credit/report/search',[reportingController::class, 'searchmonthlycredit']);
+
+
+
+// /today/user/credit/report
+Route::get('/today/user/credit/report',[reportingController::class, 'todayUserCreditreport']);
+
+
+// /monthly/user/credit/report
+Route::get('/monthly/user/credit/report',[reportingController::class, 'monthlyUserCreditreport']);
 // order today yajra
 Route::get('/today/report/all',[reportingController::class, 'todayreportdata'])->name('order.todday.data');
 // search order today
 Route::post('/search/today/order',[reportingController::class, 'searchOrdertoday']);
-// search order monthly
-Route::post('/search/monthly/order',[reportingController::class, 'searchOrdermonthly']);
 // search order all
-Route::post('/search/all/order',[reportingController::class, 'searchOrderall']);
+Route::get('/search/all/order',[reportingController::class, 'searchOrderall']);
 // search order all sale
 Route::post('/search/all/sale',[reportingController::class, 'searchOrdersale']);
 // search order all purchase
@@ -502,6 +526,10 @@ Route::get('search/usersadmin/',[UserController::class, 'usersadmin']);
 
 // /monthly/report
 Route::get('/monthly/report',[reportingController::class, 'monthlyreport']);
+
+// search order monthly
+Route::get('/search/monthly/order',[reportingController::class, 'searchOrdermonthly']);
+
 // /search/report
 Route::get('/search/report',[reportingController::class, 'searchreport']);
 
@@ -551,6 +579,10 @@ Route::get('/monthOrderPDF',[PDFController::class, 'monthOrderPDF']);
 // userOrderSearchPDF
 Route::get('/userOrderSearchPDF',[PDFController::class, 'userOrderSearchPDF']);
 
+// todayOrderCreditPDF
+Route::get('/todayOrderCreditPDF',[PDFController::class, 'todayOrderCreditPDF']);
+// monthlyOrderCreditPDF
+Route::get('/monthlyOrderCreditPDF',[PDFController::class, 'monthlyOrderCreditPDF']);
 
 
 

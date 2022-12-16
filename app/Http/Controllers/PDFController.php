@@ -165,15 +165,17 @@ class PDFController extends Controller
 
 
        // here is todayOrderPDF pdf
-       public function todayOrderPDF(){
+       public function todayOrderPDF(Request $request){
+        $search = $request->search;
         $id = Auth::user()->id;
-        $devices = Invoices::where('totalPrice','!=','Devis')->where('status','=','Approuvé')->whereDate('date', now())->get();
+        $devices = Invoices::where('product','LIKE','%'.$search.'%')->where('totalPrice','!=','Devis')->where('status','=','Approuvé')->whereDate('date', now())->get();
         $pdf = Pdf::loadView('pdf.todayOrder',[
             'devices' => $devices
         ]);
         return $pdf->download('todayOrder.pdf'); 
 
     }
+    
 
 
     
@@ -181,9 +183,10 @@ class PDFController extends Controller
 
     
        // here is monthOrderPDF pdf
-       public function monthOrderPDF(){
+       public function monthOrderPDF(Request $request){
         $id = Auth::user()->id;
-        $devices = Invoices::where('totalPrice','!=','Devis')->where('status','=','Approuvé')
+        $search = $request->search;
+        $devices = Invoices::where('product','LIKE','%'.$search.'%')->where('totalPrice','!=','Devis')->where('status','=','Approuvé')
         ->whereMonth('date', date('m'))->whereYear('date', date('Y'))->get();
         $pdf = Pdf::loadView('pdf.monthOrder',[
             'devices' => $devices
@@ -199,13 +202,44 @@ class PDFController extends Controller
       // here is userOrderSearchPDF pdf
       public function userOrderSearchPDF(Request $request){
         $id = Auth::user()->id;
-        $devices = Parcel::whereBetween('date',[$request->search , $request->search1])->where('status','=','Approuvé')->get(); 
+        $search = $request->search;
+        $devices = Invoices::whereBetween('date',[$request->from_date , $request->to_date])->where('status','=','Approuvé')->get();
+
         $pdf = Pdf::loadView('pdf.userOrderSearch',[
             'devices' => $devices
         ]);
         return $pdf->download('userOrderSearch.pdf'); 
 
     }
+
+
+
+    
+       // here is todayOrderCreditPDF pdf
+       public function todayOrderCreditPDF(Request $request){
+        $search = $request->search;
+        $id = Auth::user()->id;
+        $devices = Invoices::where('product','LIKE','%'.$search.'%')->where('service_id','!=','Devis')->where('status','=','Approuvé')->whereDate('userCreditDate', now())->get();
+        $pdf = Pdf::loadView('pdf.todayOrderCredit',[
+            'devices' => $devices
+        ]);
+        return $pdf->download('todayOrderCredit.pdf'); 
+
+    }
+
+
+
+           // here is monthlyOrderCreditPDF pdf
+           public function monthlyOrderCreditPDF(Request $request){
+            $search = $request->search;
+            $id = Auth::user()->id;
+            $devices = Invoices::where('product','LIKE','%'.$search.'%')->where('service_id','!=','Devis')->where('payStatus','=','Payé')->whereMonth('userCreditDate', date('m'))->whereYear('userCreditDate', date('Y'))->get();
+            $pdf = Pdf::loadView('pdf.monthlyOrderCredit',[
+                'devices' => $devices
+            ]);
+            return $pdf->download('monthlyOrderCredit.pdf'); 
+    
+        }
 
 
 

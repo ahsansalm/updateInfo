@@ -34,16 +34,17 @@
 
                             </thead>
                             <tbody>
+                                @php($i=1)
                                 @foreach($devices as $device)
                                         <tr>
-                                        <th scope="row"><b class="text-dark">{{$device->productId}}</b></th>
+                                        <th scope="row"><b class="text-dark">{{$i++}}</b></th>
                                             <th scope="row" hidden><b class="text-dark">{{$device->id}}</b></th>
                                             <td><b>{{$device->user->firstname}} {{$device->user->lastname}} </b></td>
-                                            <td><b class="text-dark">{{$device->product->marks}}</b></td>
-                                            <td>{{$device->product->product}}</td>
+                                            <td><b class="text-dark">{{$device->marks}}</b></td>
+                                            <td>{{$device->product}}</td>
                                             <td>{{$device->servicedata->service}}</td>
                                             <td><span class="badge bagde-sm bg-success">{{$device->status}}</span></td>
-                                            <td>{{$device->servicedata->sale}} €</td>
+                                            <td>{{$device->totalPrice}} €</td>
                                             <td>{{$device->servicedata->purchase_price}} €</td>
                                             <td>{{$device->date}} </td>
                                         </tr>

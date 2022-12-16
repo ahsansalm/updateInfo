@@ -47,7 +47,7 @@
 
     <div class="col-12">
     <hr>
-        <h4 class=" text-dark my-2">Revenu total:</h4>
+        <h4 class=" text-dark my-2">Revenu basé sur la commande:</h4>
     </div>
 
 
@@ -67,8 +67,6 @@
             </div>
         </div>
     </div>
-
-
 
 
     <div class="col-12">
@@ -106,6 +104,107 @@
         </div>
       </a>
     </div>
+
+
+    <div class="col-12">
+    <hr>
+        <h4 class=" text-dark my-2">Revenu basé sur le crédit utilisateur:</h4>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card card_back-con">
+            <div class="card-body ">
+                <h4>Crédit totale: <span class="badge bg-primary float-right p-3">{{$saleCredit}} €</span></h4>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card card_back-con">
+            <div class="card-body ">
+                <h4>Crédits d'achat: <span class="badge bg-danger float-right p-3">{{$purchaseCredit}} €</span></h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card_back-con">
+            <div class="card-body ">
+                <h4>Bénéfice de crédit: <span class="badge bg-success float-right p-3">{{$profitCredit}} €</span></h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mt-3">
+        <a href="{{url('')}}">
+            <div class="card card_back-con1">
+                <div class="card-body ">
+                    <h4>Recherche par date:</h4>
+                </div>
+            </div> 
+        </a>
+    </div>
+
+    <div class="col-md-4 mt-3">
+        <a href="{{url('/monthly/user/credit/report')}}">
+            <div class="card card_back-con1">
+                <div class="card-body ">
+                    <h4>Rapport mensuel: </h4>
+                </div>
+            </div>
+        </a>
+    </div>
+
+
+    <div class="col-md-4 mt-3">
+      <a href="{{url('/today/user/credit/report')}}">
+        <div class="card card_back-con1">
+            <div class="card-body ">
+                <h4>Rapport d'aujourd'hui: </h4>
+            </div>
+        </div>
+      </a>
+    </div>
+
+
+
+
+    <div class="col-12">
+    <hr>
+        <h4 class=" text-dark my-2">Revenu basé sur le crédit administratif:</h4>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card card_back-con">
+            <div class="card-body ">
+                <h4>Crédit totale: <span class="badge bg-primary float-right p-3">{{$adminsaleCredit}} €</span></h4>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card card_back-con">
+            <div class="card-body ">
+                <h4>Crédits d'achat: <span class="badge bg-danger float-right p-3">{{$adminpurchaseCredit}} €</span></h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card_back-con">
+            <div class="card-body ">
+                <h4>Bénéfice de crédit: <span class="badge bg-success float-right p-3">{{$adminprofitCredit}} €</span></h4>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
 
 
 </div>

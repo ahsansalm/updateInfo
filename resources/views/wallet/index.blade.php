@@ -17,11 +17,8 @@
                 <h4>Supporter Portfolio</h4>
             </div>
             <div class="card-body">
-               @if($payment)
-                 <h2 class="my-3 text-center">{{ $payment }} Credits</h2>
-               @else
-                <h2 class="my-3 text-center">0 Credits</h2>
-               @endif
+                 <h2 class="my-3 text-center">{{ $payment->credits }} Credits</h2>
+                 
                 <h5>Votre portefeuille est vide, vous devez recharger votre portefeuille, pour pouvoir demander une assistance à distance
                     <br><br>
                     Votre portefeuille vous permet d'utiliser l'assistance à distance

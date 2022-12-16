@@ -30,6 +30,7 @@
                                 <th scope="col" class="text-white">Statut</th>
                                 <th scope="col" class="text-white">Payer Statut</th>
                                 <th scope="col" class="text-white">Payer</th>
+                                    <th scope="col" class="text-white">Un d. Payé</th>
                                 <th scope="col" class="text-white" style="width: 80px;">Option</th>
                             </tr>
                         </thead>
@@ -53,6 +54,12 @@
                                     <td><span class="badge badge-primary">{{$invoice->payStatus}}</span></td>
                                     @else
                                     <td><span class="badge badge-danger">{{$invoice->payStatus}}</span></td>
+                                    @endif
+
+                                    @if($invoice->adminPaid =='Payé')
+                                    <td><span class="badge bagde-sm bg-primary">Payé</span></td>
+                                        @else
+                                    <td><span class="badge bagde-sm bg-danger">{{$invoice->adminPaid}}</span></td>
                                     @endif
 
 

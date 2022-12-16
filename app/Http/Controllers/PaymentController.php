@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Credit;
+use App\Models\user_total_credit;
 use Illuminate\Http\Request;
 use Omnipay\Omnipay;
 use Auth;
+use DB;
 class PaymentController extends Controller
 {
     private $gateway;
@@ -76,9 +78,13 @@ class PaymentController extends Controller
                 $payment->payment_status = $arr['state'];
                 $payment->save();
 
-                Credit::insert([
-                    'user_id' => $id,
-                    'credits' => $request->credits,
+                $old_val =  user_total_credit::where('user_id' ,'=', $id)->first();
+                $credits = $old_val->credits;
+                $new_val =   $arr['transactions'][0]['amount']['total'] + $credits;
+                
+
+                user_total_credit::where('user_id',$id)->update([
+                    'credits' => $new_val,
                 ]);
 
 

@@ -37,16 +37,18 @@
         </div>
     </div>
     <div class="col-12 text-right">
-        <a href="{{url('monthOrderPDF')}}">
-            <button type="button" class="btn btn-sm btn-success float-right mt-2">Exporter PDF</button>
-        </a>
+
+        <form action="{{url('monthOrderPDF')}}">
+            <input type="hidden" class="form-control" value="{{$search}}" name="search" placeholder="Ordre de recherche par nom d'utilisateur...">
+            <button type="submit" class="btn btn-sm btn-success float-right mt-2">Exporter PDF</button>
+        </form>
     </div>
 
     <div class="col-12 mt-3">
     <form action="{{url('/search/monthly/order')}}">
                 <div class="row">
                         <div class="col-10">
-                            <input type="search" class="form-control"  name="search" placeholder="Rechercher une commande par nom de produit...">
+                            <input type="search" class="form-control" value="{{$search}}" name="search" placeholder="Rechercher une commande par nom de produit...">
                         </div>
                         <div class="col-2">
                          <button type="submit" class="btn btn-block btn-primary">Chercher</button>

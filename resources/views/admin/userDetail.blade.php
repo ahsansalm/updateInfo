@@ -61,7 +61,7 @@
                         <td><p id="putBenifit">{{$user->profile->address}}</td>
                         <th scope="row">10</th>
                         <td><h6>Crédits:</h6></td>
-                        <td><p id="putBrand">{{$amount}}</p></td>
+                        <td><p id="putBrand">{{$amount->credits}}</p></td>
                         </tr>
                         <tr>
                        

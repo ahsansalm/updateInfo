@@ -86,7 +86,8 @@ class UserController extends Controller
             $users = User::where('name','LIKE','%'.$search.'%')->where('role_as','0')->orderBy('id', 'DESC')->get();
 
          }else{
-            $users = User::where('role_as','0')->orderBy('id', 'DESC')->get();         }
+            $users = User::where('role_as','0')->orderBy('id', 'DESC')->get();         
+        }
         
         $Parcel = Parcel::where('userId' , $id)->first();
         

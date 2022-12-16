@@ -5,12 +5,13 @@
 <div class="row">
     <div class="col-12 text-center">
         <div class="dashboard_image">
-            <h1 class="brand_device mt-5">Rapport mensuel</h1> 
+            <h1 class="brand_device mt-5">Rapport d'aujourd'hui </h1> 
         </div>
     </div>
 </div>
 
 <div class="row my-3">
+    
 
     <div class="col-md-4">
         <div class="card card_back-con">
@@ -37,16 +38,20 @@
         </div>
     </div>
     <div class="col-12 text-right">
-        <a href="{{url('monthOrderPDF')}}">
-            <button type="button" class="btn btn-sm btn-success float-right mt-2">Exporter PDF</button>
-        </a>
+
+        <form action="{{url('todayOrderPDF')}}">
+            <input type="hidden" class="form-control" value="{{$search}}" name="search" placeholder="Ordre de recherche par nom d'utilisateur...">
+            <button type="submit" class="btn btn-sm btn-success float-right mt-2">Exporter PDF</button>
+        </form>
+
+
     </div>
 
     <div class="col-12 mt-3">
-    <form action="{{url('/search/monthly/order')}}">
+            <form action="{{url('today/report/search')}}">
                 <div class="row">
                         <div class="col-10">
-                            <input type="search" class="form-control"  name="search" placeholder="Rechercher une commande par nom de produit...">
+                            <input type="search" value="{{$search}}" class="form-control"  name="search" placeholder="Rechercher une commande par nom de produit...">
                         </div>
                         <div class="col-2">
                          <button type="submit" class="btn btn-block btn-primary">Chercher</button>
@@ -54,7 +59,6 @@
                         </div>
                     </div>
                </form>
-
                         <table class="table mt-2">
                             <thead style="background: rgb(12, 23, 65);">
                                 <tr>
@@ -83,7 +87,7 @@
                                             <td><span class="badge bagde-sm bg-success">{{$device->status}}</span></td>
                                             <td>{{$device->totalPrice}} €</td>
                                             <td>{{$device->servicedata->purchase_price}} €</td>
-                                            <td>{{$device->date}}</td>
+                                            <td>{{$device->date}} </td>
                                         </tr>
                                     </form>
                                 @endforeach
@@ -110,7 +114,7 @@ $(document).ready(function(){
         var search = $(this).val();
         console.log(search)
         $.ajax({
-                    url: '{{ url('/search/monthly/order') }}',
+                    url: '{{ url('/search/today/order') }}',
                     type:'post',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'

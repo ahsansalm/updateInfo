@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Invoices;
 use App\Models\Parcel;
 use Auth;
+use App\Models\user_total_credit;
+use DB;
 
 class BillController extends Controller
 {
@@ -27,16 +29,52 @@ class BillController extends Controller
         return view("bill.detail",compact('Invoice','bills','Parcel'));    
     }
 
+    // PayerBillDetail
+    public function PayerBillDetail($id){
+      $bills = Invoices::find($id);
+      $userId = Auth::user()->id;
+      $Parcel = Parcel::where('userId' , $userId)->first();
+      $Invoice = Invoices::where('user_id' , $userId)->first();
+      return view("bill.payerdetail",compact('Invoice','bills','Parcel'));    
+  }
+
+
+
     // pay bill
-    public function PayerBill($id){
-      Invoices::find($id)->update([
-        'payStatus' => 'Payé',
-    ]);
-    $notification = array(
-        'message' => 'Payé avec succès!',
-        'alert_type' => 'success'
-    );
-    return Redirect()->back()->with( $notification); 
+    public function PayerBill(Request $request,$id){
+      $userId = Auth::user()->id;
+      $price = $request->price;
+      $amount =  user_total_credit::where('user_id' ,'=', $userId)->first();
+      $newcredits = $amount->credits;
+      $total = $newcredits-$price;
+      // dd($total);
+      if($total >= "0"){
+        DB::table('parcels')->update(array('order_noti' => 'Nouveau'));
+        DB::table('invoices')->update(array('quote_noti' => 'neuf'));
+          $values = [
+            'credits'  => $total,
+        ];
+        DB::table('user_total_credits')->where('user_id', '=', $userId)->update($values);
+
+
+        Invoices::find($id)->update([
+          'payStatus' => 'Payé',
+          'userCreditDate' => date('Y-m-d'),
+      ]);
+      $notification = array(
+          'message' => 'Payé avec succès!',
+          'alert_type' => 'success'
+      );
+      return Redirect('/MyBill')->with( $notification); 
+      }else{
+        $notification = array(
+          'message' => 'Vous navez pas assez de crédits!',
+          'alert_type' => 'error'
+      );
+      return Redirect()->back()->with( $notification); 
+      }
+
+      
   }
 
 

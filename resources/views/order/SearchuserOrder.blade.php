@@ -29,7 +29,7 @@
                     </div>
                </form>
                         <table class="table mt-2">
-                            <thead style="background: rgb(12, 23, 65);">
+                        <thead style="background: rgb(12, 23, 65);">
                                 <tr>
                                     <th scope="col" class="text-white">#</th>
                                     <th scope="col" class="text-white">Nom d'utilisateur</th>
@@ -41,6 +41,8 @@
                                     <th scope="col" class="text-white">Dispositif Statut</th>
                                     <th scope="col" class="text-white">Prix</th>
                                     <th scope="col" class="text-white">Remarques</th>
+                                    <th scope="col" class="text-white">Nous. Payé</th>
+                                    <th scope="col" class="text-white">Un d. Payé</th>
                                     <th scope="col" class="text-white">Action</th>
                                 </tr>
                             </thead>
@@ -52,7 +54,7 @@
                                             <th scope="row"><b class="text-dark">{{$i++}}</b></th>
                                             <th scope="row" hidden><b class="text-dark">{{$device->id}}</b></th>
                                             <td><b>{{$device->user->firstname}} {{$device->user->lastname}} </b></td>
-                                            <td><img src="../../{{$device->user->photo}}" style="height: 30px; width 20px;" alt=""></td>
+                                            <td><img src="{{$device->user->photo}}  " style="height: 30px; width 20px;" alt=""></td>
                                             <td><b class="text-dark">{{$device->neww->marks}}</b></td>
                                             <td>{{$device->neww->product}}</td>
                                             <td>{{$device->servicedata->service}}</td>
@@ -77,8 +79,11 @@
                                             @elseif($device->neww->admin_status =='Retour au client')
                                             <td><span class="badge bagde-sm bg-success">{{$device->neww->admin_status}}</span></td>
                                             @else
-                                            <td><span class="badge bagde-sm "  style="background: #FF7F50" >{{$device->neww->admin_status}}</span></td>
+                                            <td><span class="badge bagde-sm" style="background: #FF7F50">{{$device->neww->admin_status}}</span></td>
                                             @endif
+
+
+
 
 
                                             <td>{{$device->totalPrice}}</td>
@@ -87,6 +92,29 @@
                                                     <button type="button" class="btn btn-sm btn-warning">Remarques</button>
                                                 </a>
                                             </td>
+
+
+
+                                            
+
+
+                                            @if($device->payStatus =='Payé')
+                                            <td><span class="badge bagde-sm bg-dark">Payé</span></td>
+                                             @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->payStatus}}</span></td>
+                                            @endif
+
+
+                                            @if($device->adminPaid =='Payé')
+                                            <td><span class="badge bagde-sm bg-dark">Payé</span></td>
+                                             @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->adminPaid}}</span></td>
+                                            @endif
+
+
+
+
+
                                             <td>
                                                 <a href="{{url('Approved/order/detail/'.$device->productId)}}">
                                                     <button type="button" class="btn btn-sm btn-primary">Voir</button>

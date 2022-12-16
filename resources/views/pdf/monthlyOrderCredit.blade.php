@@ -17,7 +17,7 @@
               <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                    <h4>Commande de l'utilisateur :</h4>
+                    <h4>Rapport mensuel de crédit utilisateur :</h4>
                         <table class="table-bordered text-center" style="width: 90%">
                             <thead style="background: rgb(12, 23, 65);">
                                 <tr>
@@ -46,7 +46,7 @@
                                             <td><span class="badge bagde-sm bg-success">{{$device->status}}</span></td>
                                             <td>{{$device->totalPrice}} €</td>
                                             <td>{{$device->servicedata->purchase_price}} €</td>
-                                            <td>{{$device->date}} </td>
+                                            <td>{{$device->userCreditDate}} </td>
                                         </tr>
                                 @endforeach
                             </tbody>

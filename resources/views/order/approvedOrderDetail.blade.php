@@ -172,6 +172,11 @@
                                 <button type="submit" class="default-btn next-step  btn-block btn-primary" id="return">Retour au client</button>
                             </div>
 
+
+                            <div class="col-md-4">
+                                <button type="button" class="default-btn next-step  btn-block btn-primary" id="pay">Payé</button>
+                            </div>
+
                             
                         </div>
 
@@ -342,6 +347,30 @@ $(document).ready(function(){
                         }           
         }); 
     }); 
+
+
+
+
+         // for device in pay
+         $("#pay").click(function () {
+        var userId = $("#userId").text();
+        $.ajax({
+                    url: '{{ url('/order/pay') }}',
+                    type:'post',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                   data:{'userId':userId,},
+                        success:function(success){   
+                            if(success){
+                                toastr.success(success.message,'Vous avez payé cette commande!');
+                                window.location.href = '/userOrder';
+                                
+                            }              
+                        }           
+        }); 
+    }); 
+
 
 
 

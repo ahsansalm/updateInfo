@@ -1,10 +1,10 @@
-@extends('layouts.informathic2')
+@extends('layouts.informathic3')
 @section('content')
 <div class="row text-dark">
     <div class="col-12">
         <div class="card">
             <div class="dashboard_image" >
-                <h1 class="text-center mt-5">Détail de la facture</h1> 
+                <h1 class="text-center mt-5">Détail du montant du paiement</h1> 
             </div>
             <div class="card-body">
                 <table class="table">
@@ -38,18 +38,32 @@
                             </tr>
                         </tbody>
                     </table>
-                    
-                <div class="col-md-4">
-                    
-                    <a href="{{url('/MyBill')}}">
-                        <button type="button" class="btn btn-block btn-secondary prev-step">Back</button>
-                    </a>
-                </div>
                 
 
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row">
+        
+                    
+    <div class="col-md-6">
+                    
+                    <a href="{{url('/MyBill')}}">
+                        <button type="button" class="btn btn-block btn-secondary prev-step">Back</button>
+                    </a>
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <form action="{{url('/Mybill/Payer/'.$bills->id)}}">
+                        <input type="hidden" value="{{$bills->totalPrice}}" name="price">
+                            <button type="submit" class="btn btn-block btn-secondary prev-step">Payez maintenant</button>
+                    </form>
+                </div>
+
     </div>
 </div>
 @endsection

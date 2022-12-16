@@ -170,35 +170,159 @@
     <div class="row">
             <div class="col-12">
                 <div class="card">
-                   <div class="row text-center">
-                        <div class="col-12">
-                            <div class="dashboard_image">
-                                <h1 class="brand_device mt-5">Tous les utilisateurs</h1> 
-                            </div>
-                            
-                        </div>
-                        
-                        <div class="col-12">
-                            <a href="{{url('userPDF')}}">
-                                <button type="button" class="btn btn-sm btn-success float-right m-2">Exporter PDF</button>
-                            </a>
-                        </div>
-                   </div>
-                   
+                    <div class="dashboard_image">
+                        <h1 class="text-center mt-5">Mon dernier document disponible</h1> 
+                    </div>
                     <div class="card-body">
-                    <!-- users -->
-                            <table class="table table-bordered w-100 text-dark" id="users-table">
-                                <thead style="background: rgb(12, 23, 65);">
-                                    <tr>
-                                        <th scope="col" class="text-white">#</th>
-                                        <th scope="col" class="text-white">Prénom</th>
-                                        <th scope="col" class="text-white">E-mail</th>
-                                        <th scope="col" class="text-white">Statut</th>
-                                        <th scope="col" class="text-white" style="width: 80px;">Option</th>
-                                    </tr>
-                                </thead>
-                               
-                            </table>
+
+                        <h5 class="text-dark">Mes 5 dernières commandes <a href="{{url('/userOrder')}}"><span class="text-success">( voir mes devis )</span></a></h5>
+                        <table class="table mt-2">
+                            <thead style="background: rgb(12, 23, 65);">
+                                <tr>
+                                    <th scope="col" class="text-white">#</th>
+                                    <th scope="col" class="text-white">Nom d'utilisateur</th>
+                                    <th scope="col" class="text-white">Image utilisateur</th>
+                                    <th scope="col" class="text-white">Des marques</th>
+                                    <th scope="col" class="text-white">Produit</th>
+                                    <th scope="col" class="text-white">Demande de service</th>
+                                    <th scope="col" class="text-white">Statut</th>
+                                    <th scope="col" class="text-white">Dispositif Statut</th>
+                                    <th scope="col" class="text-white">Prix</th>
+                                    <th scope="col" class="text-white">Remarques</th>
+                                    <th scope="col" class="text-white">Nous. Payé</th>
+                                    <th scope="col" class="text-white">Un d. Payé</th>
+                                    <th scope="col" class="text-white">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderSeaech">
+                                @php($i=1)
+                                @foreach($orders as $device)
+                                    <form>
+                                        <tr>
+                                            <th scope="row"><b class="text-dark">{{$i++}}</b></th>
+                                            <th scope="row" hidden><b class="text-dark">{{$device->id}}</b></th>
+                                            <td><b>{{$device->user->firstname}} {{$device->user->lastname}} </b></td>
+                                            <td><img src="{{$device->user->photo}}  " style="height: 30px; width 20px;" alt=""></td>
+                                            <td><b class="text-dark">{{$device->neww->marks}}</b></td>
+                                            <td>{{$device->neww->product}}</td>
+                                            <td>{{$device->servicedata->service}}</td>
+                                            @if($device->neww->status =='Approuvé')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->neww->status}}</span></td>
+                                            @elseif($device->neww->status =='en attendant')
+                                            <td><span class="badge bagde-sm " style="background: #FF7F50" >en attendant</span></td>
+                                            @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->neww->status}}</span></td>
+                                            @endif
+
+                                            @if($device->neww->admin_status =='Appareil accepté')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->neww->admin_status}}</span></td>
+                                            @elseif($device->neww->admin_status =='Reçu')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->neww->admin_status}}</span></td>
+                                            @elseif($device->neww->admin_status =='en cours')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->neww->admin_status}}</span></td>
+                                            @elseif($device->neww->admin_status =='SALLE DATTENTE')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->neww->admin_status}}</span></td>
+                                            @elseif($device->neww->admin_status =='Réparé')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->neww->admin_status}}</span></td>
+                                            @elseif($device->neww->admin_status =='Retour au client')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->neww->admin_status}}</span></td>
+                                            @else
+                                            <td><span class="badge bagde-sm" style="background: #FF7F50">{{$device->neww->admin_status}}</span></td>
+                                            @endif
+
+
+
+
+
+                                            <td>{{$device->totalPrice}}</td>
+                                            <td>
+                                                <a href="{{url('Approved/order/notes/'.$device->productId)}}">
+                                                    <button type="button" class="btn btn-sm btn-warning">Remarques</button>
+                                                </a>
+                                            </td>
+
+
+
+                                            
+
+
+                                            @if($device->payStatus =='Payé')
+                                            <td><span class="badge bagde-sm bg-success">Payé</span></td>
+                                             @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->payStatus}}</span></td>
+                                            @endif
+
+
+                                            @if($device->adminPaid =='Payé')
+                                            <td><span class="badge bagde-sm bg-success">Payé</span></td>
+                                             @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->adminPaid}}</span></td>
+                                            @endif
+
+
+
+
+
+                                            <td>
+                                                <a href="{{url('Approved/order/detail/'.$device->productId)}}">
+                                                    <button type="button" class="btn btn-sm btn-primary">Voir</button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    <!-- invoices -->
+                        <hr>
+                        <h5 class="text-dark">Mes 5 dernières citations <a href="{{url('/userQuotes')}}"><span class="text-success">( voir mes factures )</a></span></h5>
+                        <table class="table mt-2">
+                            <thead style="background: rgb(12, 23, 65);">
+                                <tr>
+                                    <th scope="col" class="text-white">#</th>
+                                    <th scope="col" class="text-white">Nom d'utilisateur</th>
+                                    <th scope="col" class="text-white">Image utilisateur</th>
+                                    <th scope="col" class="text-white">Des marques</th>
+                                    <th scope="col" class="text-white">Produit</th>
+                                    <th scope="col" class="text-white">Demande de service</th>
+                                    <th scope="col" class="text-white">Statut</th>
+                                    <th scope="col" class="text-white">Prix</th>
+                                    <th scope="col" class="text-white">Devis Prix</th>
+                                    <th scope="col" class="text-white">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php($i=1)
+                                @foreach($quotation as $device)
+                                    <form action="{{url('/quotes/approved/'.$device->id)}}" method='POST'>
+                                        @csrf
+                                        <tr>
+                                            <th scope="row"><b class="text-dark">{{$i++}}</b></th>
+                                            <td><b>{{$device->user->firstname}} {{$device->user->lastname}} </b></td>
+                                            <td><img src="{{$device->user->photo}}  " style="height: 30px; width 20px;" alt=""></td>
+                                            <td><b class="text-dark">{{$device->neww->marks}}</b></td>
+                                            <td>{{$device->neww->product}}</td>
+                                            <td>{{$device->servicedata->service}}</td>
+                                            @if($device->status =='Approved')
+                                            <td><span class="badge bagde-sm bg-success">{{$device->status}}</span></td>
+                                            @elseif($device->status =='Refus')
+                                            <td><span class="badge bagde bg-danger">Rufus</span></td>
+                                            @else
+                                             <td><span class="badge bagde" style="background: #FF7F50">{{$device->status}}</span></td>
+                                            @endif
+                                            <td>{{$device->totalPrice}}</td>
+                                            <td><b class="text-dark">{{$device->quotePrice}}</td>
+                                            <td>
+                                                <a href="{{url('quotes/detail/'.$device->productId)}}">
+                                                <button type="button" class="btn btn-sm btn-primary">Suite</button>
+                                               </a>
+                                               
+                                            </td>
+                                        </tr>
+                                    </form>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
