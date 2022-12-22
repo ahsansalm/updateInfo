@@ -56,6 +56,10 @@ $(document).ready(function () {
         else if(confirmPassword == ""){
             return false;
         }
+
+        else if(confirmPassword != pass){
+            return false;
+        }
         else{
          var active = $('.wizard .nav-tabs li.active');
          active.next().removeClass('disabled');
@@ -104,6 +108,36 @@ $(document).ready(function () {
        
 
     });
+
+
+
+    // $(".third-step").click(function (e) {
+    //     var time = $("#time").val();
+    //     var totime = $("#totime").val();
+    //     if(time.length == "")
+    //     {
+    //       $("#p1111").text("Veuillez remplir ceci");
+    //       $("#nameGet").focus();
+    //       return false;
+    //     }
+
+    //   else if(totime.length == "")
+    //     {
+    //       $("#p100000").text("Veuillez remplir ceci");
+    //       $("#name").focus();
+    //       return false;
+    //     }
+      
+    //     else{
+    //         var active = $('.wizard .nav-tabs li.active');
+    //         active.next().removeClass('disabled');
+    //         nextTab(active);
+    //     }
+
+       
+       
+
+    // });
   
     $(".go-step").click(function (e) {
         var id = $(".BrandValue").val();

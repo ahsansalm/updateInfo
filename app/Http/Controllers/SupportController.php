@@ -8,6 +8,8 @@ use Auth;
 use App\Models\Invoices;
 use App\Models\Support;
 use App\Models\ProblemReply;
+use App\Models\Notification;
+use App\Models\Message;
 use Illuminate\Support\Carbon;
 use DB;
 class SupportController extends Controller
@@ -25,10 +27,16 @@ class SupportController extends Controller
         
         $Parcel = Parcel::where('userId' , $id)->first();
         $Invoice = Invoices::where('user_id' , $id)->first();
-
-
-        return view("support.index",compact('Invoice','Parcel','supports'));    
-    }
+            $notiF2 = Notification::first();
+   $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+    
+   $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+   $msg2 = Message::first();
+   
+   
+     
+            return view("support.index",compact('message2','msg2','notiF2','notification2','Invoice','Parcel','supports'));    
+        }
     // edit support page
     public function EditSupport($id){
         $parcel = Parcel::find($id);
@@ -41,7 +49,14 @@ class SupportController extends Controller
         $reply = ProblemReply::where('userId',$userId)->where('productId',$id)->get();
         $Invoice = Invoices::where('user_id' , $userId)->first();
         $Parcel = Parcel::where('userId' , $userId)->first();
-        return view("support.detail",compact('Invoice','parcel','supports','reply','Parcel'));    
+
+        $notiF2 = Notification::first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$userId)->orderBy('id','desc')->get();
+        $message2 = Message::where('or_status','=','User')->where('userId',$userId)->orderBy('id','desc')->get();
+        $msg2 = Message::first();
+        
+        
+        return view("support.detail",compact('message2','msg2','notiF2','notification2','Invoice','parcel','supports','reply','Parcel'));    
     }
     // add problem
     public function AddSupport(Request $request){
@@ -59,6 +74,16 @@ class SupportController extends Controller
             'icon' => $request->icon,
             'created_at' => Carbon::now(),
             ]);
+
+            Message::insert([
+                'userId' => $request->userId,
+                'description' => 'Nouveau message reçu',
+                'status' => 'Neuf',
+                'or_status' => 'Admin',
+                'productId' => $request->productId,
+                'created_at' => Carbon::now(),
+            ]);
+
             return response('success');
     }
 
@@ -74,6 +99,12 @@ class SupportController extends Controller
             'icon' => $request->icon,
             'created_at' => Carbon::now(),
             ]);
+
+
+            // DB::table('notifications')->where('userId' , $user)->update(array('or_status' => 'Neuf'));
+
+         
+
             return response('success');
     }
 
@@ -91,7 +122,17 @@ class SupportController extends Controller
             $supports = Parcel::where('userId',$id)->get();      
        }
          $Parcel = Parcel::first();
-         return view("support.search",compact('Parcel','supports','search'));  
+
+         $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+   
+ 
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+
+
+   
+         return view("support.search",compact('message2','msg2','notiF2','notification2','Parcel','supports','search'));  
    
        }
 

@@ -9,6 +9,8 @@ use App\Models\Parcel;
 use App\Models\Invoices;
 use Illuminate\Support\Carbon;
 use DB;
+use App\Models\Notification;
+use App\Models\Message;
 use Auth;
 use Yajra\Datatables\Datatables;
 class ProblemController extends Controller
@@ -18,9 +20,11 @@ class ProblemController extends Controller
         DB::table('parcels')->where('admin_noti', '=', 'Nouveau')->update(array('admin_noti' => 1));
         $supports = Parcel::all();
         $Parcel = Parcel::first();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
 
        $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("problem.index",compact('Invoice','supports','Parcel'));
+        return view("problem.index",compact('message','msg','Invoice','supports','Parcel'));
     }
         // yajra  for problem
         public function getproblem()
@@ -48,9 +52,20 @@ class ProblemController extends Controller
         $userId = $supports->userId;
         $chat = Support::where('userId',$userId)->where('productId',$id)->get();
         $reply = ProblemReply::where('userId',$userId)->where('productId',$id)->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+
+
         $Parcel = Parcel::first();
        $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("problem.detail",compact('Invoice','supports','chat','reply','Parcel'));    
+
+
+       $notiF = Notification::first();
+       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+      
+
+        return view("problem.detail",compact('message','msg','notification','notiF','Invoice','supports','chat','reply','Parcel'));    
     }
     // reply to problem
     public function ReplyProb(Request $request){
@@ -79,6 +94,18 @@ class ProblemController extends Controller
             'answer' => $request->answer,
             'created_at' => Carbon::now(),
             ]);
+
+
+
+            Message::insert([
+                'userId' => $request->userId,
+                'description' => 'Nouveau message reçu',
+                'status' => 'Neuf',
+                'or_status' => 'User',
+                'productId' => $request->productId,
+                'created_at' => Carbon::now(),
+            ]);
+
             return response('success');
     }
 }

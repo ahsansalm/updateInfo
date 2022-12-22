@@ -1,5 +1,35 @@
 @extends('layouts.informathic3')
 @section('content')
+
+
+<!-- Modal HTML -->
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+                <i class="fa fa-check" style="font-size:46px"></i>
+				</div>						
+				<h4 class="modal-title w-100">Es-tu sûr?</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p>Voulez-vous vraiment procéder à cette transaction ?</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <form action="{{url('/Mybill/Payer/'.$bills->id)}}">
+                        <input type="hidden" value="{{$bills->totalPrice}}" name="price">
+                            <button type="submit" class="btn btn-block btn-secondary prev-step">Payez maintenant</button>
+                    </form>
+			</div>
+		</div>
+	</div>
+</div>   
+
+
+
+
 <div class="row text-dark">
     <div class="col-12">
         <div class="card">
@@ -48,7 +78,7 @@
     <div class="row">
         
                     
-    <div class="col-md-6">
+                <div class="col-md-6">
                     
                     <a href="{{url('/MyBill')}}">
                         <button type="button" class="btn btn-block btn-secondary prev-step">Back</button>
@@ -57,11 +87,13 @@
 
 
                 <div class="col-md-6">
+                    
+                <a href="#myModal"data-toggle="modal">
+                        <button type="button" class="btn btn-block btn-secondary prev-step">Payez maintenant</button>
+                    </a>
+                </div>
 
-                    <form action="{{url('/Mybill/Payer/'.$bills->id)}}">
-                        <input type="hidden" value="{{$bills->totalPrice}}" name="price">
-                            <button type="submit" class="btn btn-block btn-secondary prev-step">Payez maintenant</button>
-                    </form>
+
                 </div>
 
     </div>

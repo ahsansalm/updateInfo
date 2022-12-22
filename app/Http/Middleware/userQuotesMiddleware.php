@@ -8,6 +8,8 @@ use Auth;
 use DB;
 use Illuminate\Http\Request;
 use App\Models\Invoices;
+use App\Models\Message;
+use App\Models\Notification;
 
 class userQuotesMiddleware
 {
@@ -26,7 +28,16 @@ class userQuotesMiddleware
         DB::table('invoices')->update(array('quote_noti' => Null));
             $Parcel = Parcel::first();
             $devices = Invoices::orderBy('id', 'DESC')->where('totalPrice','=','Devis')->get();
-            return response()->view("order.quotesOrder",compact('devices','Parcel'));  
+
+            $notiF = Notification::first();
+            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+       
+  
+            $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+            $msg = Message::first();
+    
+            
+            return response()->view("order.quotesOrder",compact('message','msg','notiF','notification','devices','Parcel'));  
         }
         else 
         { 

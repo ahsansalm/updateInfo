@@ -335,21 +335,29 @@
                                                 <br>
 
 
-                                                <div class="col-8">
+                                                <div class="col-8 mt-3">
                                                 <h6>A quelle tranche horaire pouvons-nous vous contacter.</h6>
                                                 </div>
-                                                <div class="col-4">
-                                                    <input type="time" name="time" class="form-control">
+                                                <div class="col-2">
+                                                    <label class="col-form-label"><b>De temps</b></label> 
+                                                    <input type="time" id="time" name="time" class="form-control">
+                                                    <p id="p1111" class="text-danger"></p>
                                                 </div>
+                                                <div class="col-2">
+                                                    <label class="col-form-label"><b>À l'heure</b></label> 
+                                                    <input type="time" id="totime" name="totime" class="form-control">
+                                                    <p id="p100000" class="text-danger"></p>
+                                                </div>
+
                                                 
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 mt-2">
                                                     <button type="button" class="default-btn prev-step btn-block btn-secondary">Retournez aux informations</button>
 
                                                 </div>
 
 
-                                                <div class="col-md-6">
-                                                    <button type="button" class="default-btn next-step  btn-block btn-primary">Etape suivante</button>
+                                                <div class="col-md-6 mt-2">
+                                                    <button type="button" id="submit3" class="default-btn  next-step btn-block btn-primary">Etape suivante</button>
                                                 </div>
 
                                                 
@@ -749,6 +757,38 @@ $(".getpassword").click(function(){
                 return false;
               }
     });
+
+
+
+
+
+    // $('#submit3').click(function(){
+    //     var time = $("#time").val();
+    //     var totime = $("#totime").val();
+    //     if(time.length == "")
+    //       {
+    //         $("#p1111").text("Veuillez remplir ceci");
+    //         $("#nameGet").focus();
+    //         return false;
+    //       }
+
+    //     else if(totime.length == "")
+    //       {
+    //         $("#p100000").text("Veuillez remplir ceci");
+    //         $("#name").focus();
+    //         return false;
+    //       }
+    //       else if(email_verification != email)
+    //       {
+    //         $("#p30").text("L'e-mail ne correspond pas");
+    //         $("#email_verification").focus();
+    //         return false;
+    //       }
+    //       else
+    //       {
+    //             return false;
+    //           }
+    // });
 </script>
 
 

@@ -6,6 +6,8 @@ use Closure;
 use App\Models\Parcel;
 use App\Models\Invoices;
 use Illuminate\Http\Request;
+use App\Models\Notification;
+use App\Models\Message;
 use Auth;
 use DB;
 class AdminMiddleware
@@ -23,10 +25,19 @@ class AdminMiddleware
         if ($user == 1) {
             DB::table('parcels')->where('admin_noti', '=', 'Nouveau')->update(array('admin_noti' => 1));
             $Parcel = Parcel::first();
+            $notiF = Notification::first();
+            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
 
+
+            $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+            $msg = Message::first();
+
+            
             $supports = Parcel::all();
             $Invoice = Invoices::first();
-            return response()->view('problem.index',compact('Invoice','supports','Parcel'));
+
+            
+            return response()->view('problem.index',compact('message','msg','notification','notiF','Invoice','supports','Parcel'));
         }
         else 
         { 

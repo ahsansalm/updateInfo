@@ -9,6 +9,8 @@ use App\Models\service;
 use App\Models\Parcel;
 use App\Models\Invoices;
 use App\Models\User;
+use App\Models\Notification;
+use App\Models\Message;
 use Auth;
 use Image;
 use Yajra\Datatables\Datatables;
@@ -20,7 +22,14 @@ class ConfigurationController extends Controller
     public function index(){
         $Parcel = Parcel::first();
       $Invoice = Invoices::where('totalPrice','Quotation')->first();
-        return view("config.index",compact('Invoice','Parcel'));
+
+
+      $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
+      
+        return view("config.index",compact('message','msg','notiF','notification','Invoice','Parcel'));
     }
     
 
@@ -29,7 +38,11 @@ class ConfigurationController extends Controller
         $brand = DB::table('brands')->first();
         $Parcel = Parcel::first();
       $Invoice = Invoices::where('totalPrice','Quotation')->first();
-        return view('config.brands.index',compact('brand','Parcel','Invoice'));
+      $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
+        return view('config.brands.index',compact('message','msg','notiF','notification','brand','Parcel','Invoice'));
     }
     // yajra  for brand
     public function getbrands()
@@ -79,8 +92,11 @@ class ConfigurationController extends Controller
         $brand = brand::find($id);
         $Parcel = Parcel::first();
       $Invoice = Invoices::where('totalPrice','Quotation')->first();
-
-        return view('config.brands.edit' ,compact('brand','Parcel','Invoice'));
+      $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
+        return view('config.brands.edit' ,compact('message','msg','notiF','notification','brand','Parcel','Invoice'));
 
     }
 
@@ -160,7 +176,11 @@ class ConfigurationController extends Controller
         $product = product::first();
         $Parcel = Parcel::first();
         $Invoice = Invoices::where('totalPrice','Quotation')->first();
-        return view('config.product.index',compact('brands','product','Parcel','Invoice'));
+        $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
+        return view('config.product.index',compact('message','msg','notiF','notification','brands','product','Parcel','Invoice'));
     }
 
 
@@ -220,7 +240,11 @@ class ConfigurationController extends Controller
         $products = product::find($id);
         $Parcel = Parcel::first();
         $Invoice = Invoices::where('totalPrice','Quotation')->first();
-        return view('config.product.edit' ,compact('products','brands','Parcel','Invoice'));
+        $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
+        return view('config.product.edit' ,compact('message','msg','notiF','notification','products','brands','Parcel','Invoice'));
 
     }
 
@@ -300,7 +324,11 @@ class ConfigurationController extends Controller
         $products = product::all();
         $service = DB::table('services')->first();
         $Parcel = Parcel::first();
-        return view('config.service.index',compact('brands','products','service','Parcel'));
+        $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
+        return view('config.service.index',compact('message','msg','notiF','notification','brands','products','service','Parcel'));
     }
 
       // yajra  for service
@@ -428,11 +456,14 @@ class ConfigurationController extends Controller
       public function editServices($id){
         $brands = brand::all();
       $Invoice = Invoices::where('totalPrice','Quotation')->first();
-
+      $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
         $products = product::all();
         $services = service::find($id);
         $Parcel = Parcel::first();
-        return view('config.service.edit',compact('Invoice','brands','products','services','Parcel'));
+        return view('config.service.edit',compact('message','msg','notiF','notification','notiF','notification','Invoice','brands','products','services','Parcel'));
 
     }
    // update service

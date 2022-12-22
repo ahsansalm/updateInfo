@@ -9,6 +9,8 @@ use App\Models\service;
 use App\Models\User;
 use App\Models\Parcel;
 use App\Models\Invoices;
+use App\Models\Notification;
+use App\Models\Message;
 use Auth;
 use Image;
 use Yajra\Datatables\Datatables;
@@ -72,7 +74,11 @@ class UserController extends Controller
             $Parcel = Parcel::first();
             $users = User::where('role_as','0')->orderBy('id', 'DESC')->get(); 
             $Invoice = Invoices::where('totalPrice','Devis')->first();
-            return view("adminUser.index",compact('Parcel','Invoice','users'));
+            $notiF = Notification::first();
+            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+            $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+            $msg = Message::first();
+            return view("adminUser.index",compact('message','msg','notification','notiF','Parcel','Invoice','users'));
     }
 
 
@@ -92,7 +98,20 @@ class UserController extends Controller
         $Parcel = Parcel::where('userId' , $id)->first();
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-         return view("adminUser.search",compact('search','users','Parcel','Invoice'));
+
+
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        
+
+
+        
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+
+
+        
+         return view("adminUser.search",compact('message','msg','notification','notiF','search','users','Parcel','Invoice'));
    
        }
 }

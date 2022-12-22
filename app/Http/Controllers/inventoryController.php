@@ -12,8 +12,10 @@ use App\Models\config\Brand;
 use App\Models\config\product;
 use App\Models\config\service;
 use App\Models\ProblemReply;
+use App\Models\Message;
 use Illuminate\Support\Carbon;
 use DB;
+use App\Models\Notification;
 
 class inventoryController extends Controller
 {
@@ -22,7 +24,16 @@ class inventoryController extends Controller
         $Parcel = Parcel::first();
         $Invoice = Invoices::where('totalPrice','Devis')->first();
         $service = DB::table('services')->first();
-        return view("inventory.index",compact('Invoice','Parcel','service'));
+
+
+        $notiF = Notification::first();
+      $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+      $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+      $msg = Message::first();
+      
+
+        return view("inventory.index",compact('message','msg','notiF','notification','Invoice','Parcel','service'));
     }
 
 
@@ -31,8 +42,13 @@ class inventoryController extends Controller
         $Parcel = Parcel::first();
         $brand = DB::table('brands')->where('disable','Actif')->get();
         $Parcel = Parcel::first();
+        $notiF = Notification::first();
+       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
 
-        return view("inventory.add",compact('Parcel','brand'));
+       
+       $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+       $msg = Message::first();
+        return view("inventory.add",compact('message','msg','notiF','notification','Parcel','brand'));
     }
 
      // fetch product 

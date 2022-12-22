@@ -244,4 +244,99 @@ class PDFController extends Controller
 
 
 
+        
+
+      // here is userCreditSearchPDF pdf
+      public function userCreditSearchPDF(Request $request){
+        $id = Auth::user()->id;
+        $search = $request->search;
+        $devices = Invoices::whereBetween('userCreditDate',[$request->from_date , $request->to_date])->where('status','=','Approuvé')->get();
+
+        $pdf = Pdf::loadView('pdf.userCreditSearch',[
+            'devices' => $devices
+        ]);
+        return $pdf->download('userCreditSearch.pdf'); 
+
+    }
+
+
+
+
+    
+       // here is todayAdminCreditPDF pdf
+       public function todayAdminCreditPDF(Request $request){
+        $search = $request->search;
+        $id = Auth::user()->id;
+        $devices = Invoices::where('product','LIKE','%'.$search.'%')
+        ->where('service_id','!=','Devis') ->where('Paid','=','Un d. Payé')
+        ->where('status','=','Approuvé')->whereDate('userCreditDate', now())->get();
+        $pdf = Pdf::loadView('pdf.todayAdminCredit',[
+            'devices' => $devices
+        ]);
+        return $pdf->download('todayAdminCredit.pdf'); 
+
+    }
+
+
+
+      
+       // here is monthlyOrderAdminCreditPDF pdf
+       public function monthlyOrderAdminCreditPDF(Request $request){
+        $search = $request->search;
+        $id = Auth::user()->id;
+        $devices = Invoices::where('product','LIKE','%'.$search.'%')->where('service_id','!=','Devis') ->where('Paid','=','Un d. Payé')->whereMonth('userCreditDate', date('m'))->whereYear('userCreditDate', date('Y'))->get();
+
+        $pdf = Pdf::loadView('pdf.monthlyAdminCredit',[
+            'devices' => $devices
+        ]);
+        return $pdf->download('monthlyAdminCredit.pdf'); 
+
+    }
+    
+
+
+      // here is adminCreditSearchPDF pdf
+      public function adminCreditSearchPDF(Request $request){
+        $id = Auth::user()->id;
+        $search = $request->search;
+
+          $devices = Invoices::whereBetween('userCreditDate',[$request->from_date , $request->to_date])->where('status','=','Approuvé')->where('Paid','=','Un d. Payé')->get();
+
+        $pdf = Pdf::loadView('pdf.adminCreditSearch',[
+            'devices' => $devices
+        ]);
+        return $pdf->download('adminCreditSearch.pdf'); 
+
+    }
+
+
+
+
+         // here is orderDetailPDF pdf
+       
+
+
+        public function orderDetailPDF(Request $request,$id){
+            $search = $request->search;
+    
+              $device = Parcel::where('id',$id)->first();
+    
+            $pdf = Pdf::loadView('pdf.orderDetailAdmin',[
+                'device' => $device
+            ]);
+            return $pdf->download('orderDetailAdmin.pdf'); 
+    
+        }
+
+        
+    
+
+
+
+
+
+
+
+
+
 }

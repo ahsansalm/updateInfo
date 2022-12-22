@@ -260,8 +260,27 @@ Route::post('/order/repair',[OrderController::class, 'repairOrder']);
 // return order
 Route::post('/order/return',[OrderController::class, 'returnOrder']);
 
+
+//Noti/ok
+Route::get('/Noti/ok',[OrderController::class, 'NotiOK'])->name('NotiOK');
+//Noti2/ok
+Route::get('/Noti2/ok',[OrderController::class, 'Noti2OK'])->name('Noti2OK');
+
 // pay order
 Route::post('/order/pay',[OrderController::class, 'payOrder']);
+
+
+// uploadPDF/page
+Route::get('upload/pdf/page/{id}',[OrderController::class, 'uploadPDFpage']);
+
+
+// upload pdf
+Route::post('/upload/pdf/{id}',[OrderController::class, 'uploadpdf']);
+
+
+
+
+
 
 
 // quotes order
@@ -294,6 +313,13 @@ Route::get('/Mybill/Payer/detail/{id}',[BillController::class, 'PayerBillDetail'
 
 // bill edit page
 Route::get('/Mybill/Payer/{id}',[BillController::class, 'PayerBill'])->name('PayerBill');
+
+
+///download/pdf/user
+Route::get('/download/pdf/user/{file}',[BillController::class, 'DownloadPDFUser']);
+
+
+
 
 
 
@@ -497,10 +523,18 @@ Route::get('/today/credit/report/search',[reportingController::class, 'searchTod
 // search /monthly/credit/report
 Route::get('/monthly/credit/report/search',[reportingController::class, 'searchmonthlycredit']);
 
-
+// search /monthly/admincredit/report
+Route::get('/monthly/admincredit/report/search',[reportingController::class, 'searchmonthlyadmincredit']);
 
 // /today/user/credit/report
 Route::get('/today/user/credit/report',[reportingController::class, 'todayUserCreditreport']);
+// /today/admin/credit/report
+Route::get('/today/admin/credit/report',[reportingController::class, 'todayadminCreditreport']);
+
+// search /today/admin/credit/report
+Route::get('/today/admin/credit/report/search',[reportingController::class, 'searchTodayAdmincredit']);
+// /monthly/admin/credit/report
+Route::get('/monthly/admin/credit/report',[reportingController::class, 'monthlyadminCreditreport']);
 
 
 // /monthly/user/credit/report
@@ -517,6 +551,10 @@ Route::post('/search/all/sale',[reportingController::class, 'searchOrdersale']);
 Route::post('/search/all/purchase',[reportingController::class, 'searchOrderpurchase']);
 // search order all profit
 Route::post('/search/all/profit',[reportingController::class, 'searchOrderprofit']);
+// /search/user/credit/report
+Route::get('/search/user/credit/report',[reportingController::class, 'searchUserCreditreport']);
+// search UserCredit all
+Route::get('/search/all/userCredit',[reportingController::class, 'searchUserCreditall']);
 
 
 // adminUser
@@ -533,6 +571,13 @@ Route::get('/search/monthly/order',[reportingController::class, 'searchOrdermont
 // /search/report
 Route::get('/search/report',[reportingController::class, 'searchreport']);
 
+
+
+
+// /search/admin/credit/report
+Route::get('/search/admin/credit/report',[reportingController::class, 'searchadminCreditreport']);
+// /search/admin/credits
+Route::get('/search/admin/credits',[reportingController::class, 'searchAdminCredits']);
 
 ////////////////////////////////////// Ua=ser sdie///////////////////////////////////
 // brnad fetach data on user 
@@ -584,6 +629,21 @@ Route::get('/todayOrderCreditPDF',[PDFController::class, 'todayOrderCreditPDF'])
 // monthlyOrderCreditPDF
 Route::get('/monthlyOrderCreditPDF',[PDFController::class, 'monthlyOrderCreditPDF']);
 
+// userCreditSearchPDF
+Route::get('/userCreditSearchPDF',[PDFController::class, 'userCreditSearchPDF']);
+
+
+// adminCreditSearchPDF
+Route::get('/adminCreditSearchPDF',[PDFController::class, 'adminCreditSearchPDF']);
+
+
+
+// todayAdminCreditPDF
+Route::get('/todayAdminCreditPDF',[PDFController::class, 'todayAdminCreditPDF']);
+// monthlyOrderAdminCreditPDF
+Route::get('/monthlyOrderAdminCreditPDF',[PDFController::class, 'monthlyOrderAdminCreditPDF']);
+// orderDetailPDF
+Route::get('/orderDetailPDF/{id}',[PDFController::class, 'orderDetailPDF']);
 
 
 

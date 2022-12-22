@@ -6,6 +6,8 @@ use Auth;
 use DB;
 use Illuminate\Http\Request;
 use App\Models\Invoices;
+use App\Models\Message;
+use App\Models\Notification;
 
 class QuotesController extends Controller
 {
@@ -15,7 +17,13 @@ class QuotesController extends Controller
       DB::table('invoices')->where('user_id', '=', $id)->update(array('user_quote_noti' => Null));
       $Parcel = Parcel::where('userId' , $id)->first();
         $devices = Invoices::where('user_id',$id)->where('totalPrice', 'Devis')->orderBy('id', 'DESC')->where('status','!=','Pending')->get();
-        return view("quotes.index",compact('devices','Parcel'));    
+        $notiF2 = Notification::first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::first();
+        
+        
+        return view("quotes.index",compact('message2','msg2','notiF2','notification2','devices','Parcel'));    
     }
 
     // quotes approved order
@@ -44,7 +52,14 @@ class QuotesController extends Controller
             $devices = Invoices::where('user_id',$id)->where('totalPrice', 'Devis')->orderBy('id', 'DESC')->where('status','!=','Pending')->get();     
        }
          $Parcel = Parcel::first();
-         return view("quotes.search",compact('search','devices','Parcel'));  
+         $notiF2 = Notification::first();
+         $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+         $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+         $msg2 = Message::first();
+         
+          
+   
+         return view("quotes.search",compact('message2','msg2','notiF2','notification2','search','devices','Parcel'));  
    
        }
 

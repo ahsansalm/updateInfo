@@ -36,6 +36,13 @@
                             <td><h6>Prix ​​du produit:</h6></td>
                             <td>   <p id="putBenifit">{{$bills->totalPrice}}</p></td>
                             </tr>
+
+                            <th scope="row">5</th>
+                            <td><h6>PDF:</h6></td>
+                                <td>   <p id="putBenifit">{{$bills->neww->pdf}}</p>  
+                                    <a href="{{url('/download/pdf/user/'.$bills->neww->pdf)}}">Télécharger</a>    
+                            </td>
+                            </tr>
                         </tbody>
                     </table>
                     

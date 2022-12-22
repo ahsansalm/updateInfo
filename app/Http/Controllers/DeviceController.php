@@ -6,6 +6,8 @@ use Auth;
 use DB;
 use Illuminate\Http\Request;
 use App\Models\Invoices;
+use App\Models\Message;
+use App\Models\Notification;
 class DeviceController extends Controller
 {
     // my devices page
@@ -18,7 +20,16 @@ class DeviceController extends Controller
       $Parcel = Parcel::where('userId' , $id)->first();
       $Invoice = Invoices::where('user_id' , $id)->first();
         $devices = Parcel::where('userId',$id)->orderBy('id','desc')->get();
-        return view("myDevice.index",compact('Invoice','devices','Parcel'));    
+
+        
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+      
+
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+
+        return view("myDevice.index",compact('message2','msg2','notiF2','notification2','Invoice','devices','Parcel'));    
     }
     // edit device page
     public function EditDevice($id){
@@ -27,7 +38,11 @@ class DeviceController extends Controller
       $Invoice = Invoices::where('user_id' , $userid)->first();
 
         $devices = Parcel::find($id);
-        return view("myDevice.detail",compact('Invoice','devices','Parcel'));    
+
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$userid)->orderBy('id','desc')->get();
+   
+        return view("myDevice.detail",compact('notiF2','notification2','Invoice','devices','Parcel'));    
     }
 
       // edit device page
@@ -36,8 +51,11 @@ class DeviceController extends Controller
         $Parcel = Parcel::where('userId' , $userid)->first();
         $Invoice = Invoices::where('user_id' , $userid)->first();
         $devices = Parcel::find($id);
-        
-        return view("myDevice.Notes",compact('devices','Invoice','Parcel'));    
+         
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$userid)->orderBy('id','desc')->get();
+   
+        return view("myDevice.Notes",compact('notiF2','notification2','devices','Invoice','Parcel'));    
     }
 
     // delete parcel device
@@ -65,7 +83,15 @@ class DeviceController extends Controller
         $devices = Parcel::where('userId',$id)->get();        
     }
       $Parcel = Parcel::first();
-      return view("myDevice.search",compact('devices','Parcel','search'));  
+      $notiF2 = Notification::first();
+      $notification2 = Notification::where('productId','=',NULL)->orderBy('id','desc')->get();
+
+
+
+      $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+      $msg2 = Message::first();
+      
+      return view("myDevice.search",compact('message2','msg2','notiF2','notification2','devices','Parcel','search'));  
 
     }
 

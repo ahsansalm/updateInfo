@@ -47,7 +47,7 @@
             <form action="{{url('monthly/credit/report/search')}}">
                 <div class="row">
                         <div class="col-10">
-                            <input type="search" class="form-control"  name="search" placeholder="Rechercher une commande par nom de produit...">
+                            <input type="search" class="form-control"   name="search" placeholder="Rechercher une commande par nom de produit...">
                         </div>
                         <div class="col-2">
                          <button type="submit" class="btn btn-block btn-primary">Chercher</button>

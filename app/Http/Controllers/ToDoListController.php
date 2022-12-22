@@ -7,8 +7,10 @@ use App\Models\ToDoList;
 use App\Models\vendor;
 use App\Models\Parcel;
 use App\Models\Invoices;
+use App\Models\Message;
 use Illuminate\Support\Carbon;
 use Auth;
+use App\Models\Notification;
 use Yajra\Datatables\Datatables;
 class ToDoListController extends Controller
 {
@@ -16,7 +18,14 @@ class ToDoListController extends Controller
     public function index(){
         $Parcel = Parcel::first();
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("toDoList.index",compact('Invoice','Parcel'));
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
+        
+        return view("toDoList.index",compact('message','msg','notiF','notification','Invoice','Parcel'));
     }
     // 
        // yajra  for list
@@ -53,7 +62,15 @@ class ToDoListController extends Controller
         $Parcel = Parcel::first();
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("toDoList.edit",compact('Invoice','task','Parcel'));
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
+      
+  
+        return view("toDoList.edit",compact('message','msg','notiF','notification','Invoice','task','Parcel'));
     }
 
     // task edit
@@ -119,7 +136,14 @@ class ToDoListController extends Controller
         $Parcel = Parcel::first();
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("toDoList.complete",compact('Invoice','Parcel'));
+    
+    $notiF = Notification::first();
+    $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+    $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
+        return view("toDoList.complete",compact('message','msg','notiF','notification','Invoice','Parcel'));
     }
      // yajra  for list
      public function getcom()
@@ -136,9 +160,15 @@ class ToDoListController extends Controller
          // favlist page
     public function favlist(){
         $Parcel = Parcel::first();
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("toDoList.favrouite",compact('Invoice','Parcel'));
+        return view("toDoList.favrouite",compact('message','msg','notiF','notification','Invoice','Parcel'));
     }
      // yajra  for list
      public function getfav()
@@ -158,7 +188,14 @@ class ToDoListController extends Controller
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
         $Parcel = Parcel::first();
-        return view("toDoList.vendorlist",compact('Invoice','Parcel'));
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
+        
+        return view("toDoList.vendorlist",compact('message','msg','notiF','notification','Invoice','Parcel'));
      }
 
 
@@ -196,9 +233,14 @@ class ToDoListController extends Controller
       public function vendorEditPage($id){
         $vendor = vendor::find($id);
         $Parcel = Parcel::first();
-        
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("toDoList.editvendor",compact('Invoice','vendor','Parcel'));
+        return view("toDoList.editvendor",compact('message','msg','notiF','notification','Invoice','vendor','Parcel'));
     }
 
     public function updatevendor(Request $request, $id){
@@ -247,7 +289,13 @@ class ToDoListController extends Controller
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
         $Parcel = Parcel::first();
-        return view("toDoList.detailvendor",compact('Invoice','vendor','Parcel'));
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
+        return view("toDoList.detailvendor",compact('message','msg','notiF','notification','Invoice','vendor','Parcel'));
     }
 
 
@@ -256,9 +304,15 @@ class ToDoListController extends Controller
     // vendorfavlist page
     public function vendorfavlist(){
         $Parcel = Parcel::first();
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-    return view("toDoList.favrouiteVendor",compact('Invoice','Parcel'));
+    return view("toDoList.favrouiteVendor",compact('message','msg','notiF','notification','Invoice','Parcel'));
     }
     // yajra  for list
     public function getvendorfav()

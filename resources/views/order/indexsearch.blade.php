@@ -40,7 +40,12 @@
                                     <td>{{$device->product}}</td>
                                     <td>{{$device->servicedata->service}}</td>
                                     <td>{{$device->parcel->totalPrice}}</td>
-                                    <td><span class="badge bg-danger">{{$device->status}}</span></td>
+                                    
+                                      @if($device->status =='en attendant')
+                                            <td><span class="badge bagde-sm"style="background: #FF7F50">{{$device->status}}</span></td>
+                                            @else
+                                            <td><span class="badge bagde-sm bg-danger">{{$device->status}}</span></td>
+                                            @endif
                                 </tr>
                             @endforeach
                         </tbody>

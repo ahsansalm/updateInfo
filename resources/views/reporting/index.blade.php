@@ -137,7 +137,7 @@
     </div>
 
     <div class="col-md-4 mt-3">
-        <a href="{{url('')}}">
+        <a href="{{url('search/user/credit/report')}}">
             <div class="card card_back-con1">
                 <div class="card-body ">
                     <h4>Recherche par date:</h4>
@@ -145,6 +145,7 @@
             </div> 
         </a>
     </div>
+
 
     <div class="col-md-4 mt-3">
         <a href="{{url('/monthly/user/credit/report')}}">
@@ -199,6 +200,40 @@
             </div>
         </div>
     </div>
+
+
+    <div class="col-md-4 mt-3">
+        <a href="{{url('search/admin/credit/report')}}">
+            <div class="card card_back-con1">
+                <div class="card-body ">
+                    <h4>Recherche par date:</h4>
+                </div>
+            </div> 
+        </a>
+    </div>
+    
+
+    <div class="col-md-4 mt-3">
+        <a href="{{url('/monthly/admin/credit/report')}}">
+            <div class="card card_back-con1">
+                <div class="card-body ">
+                    <h4>Rapport mensuel: </h4>
+                </div>
+            </div>
+        </a>
+    </div>
+
+
+    <div class="col-md-4 mt-3">
+      <a href="{{url('/today/admin/credit/report')}}">
+        <div class="card card_back-con1">
+            <div class="card-body ">
+                <h4>Rapport d'aujourd'hui: </h4>
+            </div>
+        </div>
+      </a>
+    </div>
+
 
 
 

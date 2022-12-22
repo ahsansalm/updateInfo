@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 use App\Models\Parcel;
 use Auth;
 use DB;
+use App\Models\Notification;
 use App\Models\Payment;
+use App\Models\Message;
 use App\Models\user_total_credit;
 use Illuminate\Http\Request;
 use App\Models\Invoices;
-
+use Image;
+use Illuminate\Support\Carbon;
 class OrderController extends Controller
 {
      //page
@@ -22,7 +25,13 @@ class OrderController extends Controller
         
         $Invoice = Invoices::where('user_id' , $id)->first();
         $devices = Parcel::where('userId',$id)->orderBy('id', 'DESC')->where('status','en attendant')->orWhere('status','Refus')->orderBy('id', 'DESC')->get();
-        return view("order.index",compact('Invoice','devices','Parcel'));
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+  
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+
+        return view("order.index",compact('message2','msg2','notiF2','notification2','Invoice','devices','Parcel'));
     }
 
     
@@ -38,7 +47,13 @@ class OrderController extends Controller
         }
         
         $Parcel = Parcel::where('userId' , $id)->first();
-         return view("order.indexsearch",compact('search','devices','Parcel'));
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+  
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+
+         return view("order.indexsearch",compact('message2','msg2','notiF2','notification2','search','devices','Parcel'));
    
        }
 
@@ -52,7 +67,12 @@ class OrderController extends Controller
         $Invoice = Invoices::where('totalPrice','Devis')->first();
         $devices = Invoices::where('totalPrice','!=','Devis')->orderBy('id', 'DESC')->get();
         $Parcel = Parcel::first();
-        return view("order.userOrder",compact('devices','Parcel','Invoice'));
+        $notiF = Notification::first();
+            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+            
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+            return view("order.userOrder",compact('message','msg','notiF','notification','devices','Parcel','Invoice'));
     }
       // search order
       public function searchOrder(Request $request)
@@ -65,7 +85,14 @@ class OrderController extends Controller
             $devices = Invoices::where('totalPrice','!=','Devis')->get();
         }
         $Parcel = Parcel::first();
-        return view("order.SearchuserOrder",compact('devices','Parcel','search'));
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+      
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+
+        
+        return view("order.SearchuserOrder",compact('message','msg','notiF','notification','devices','Parcel','search'));
   
       }
 
@@ -92,6 +119,17 @@ class OrderController extends Controller
             'status' => 'Approuvé',
             'date' => date('Y-m-d'),
         ]);
+
+
+        DB::table('notifications')->where('userId' , $user)->update(array('or_status' => 'Neuf'));
+        Notification::insert([
+            'userId' => $user,
+            'description' => 'Commande approuvée par ladministrateur',
+            'or_status' => 'Neuf',
+            'date' => date('Y-m-d'),
+            'created_at' => Carbon::now(),
+        ]);
+
         $notification = array(
             'message' => 'Commande approuvée avec succès!',
             'alert_type' => 'success'
@@ -103,7 +141,13 @@ class OrderController extends Controller
             $Parcel = Parcel::first();
             $device = Parcel::find($id);
              $Invoice = Invoices::where('totalPrice','Devis')->first();
-            return view("order.approvedOrderDetail",compact('device','Parcel','Invoice'));
+             $notiF = Notification::first();
+             $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+            
+
+             $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+             $msg = Message::first();
+            return view("order.approvedOrderDetail",compact('message','msg','notiF','notification','device','Parcel','Invoice'));
         }
 
 
@@ -120,7 +164,11 @@ class OrderController extends Controller
            public function ApprovedOrderNotes($id){
             $device = Parcel::find($id);
             $Parcel = Parcel::first();
-            return view("order.approvedOrderNotes",compact('device','Parcel'));
+            $notiF = Notification::first();
+            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+            $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+            return view("order.approvedOrderNotes",compact('message','msg','notiF','notification','device','Parcel'));
         }
             // order notes
             public function orderNotes(Request $request,$id){
@@ -143,7 +191,12 @@ class OrderController extends Controller
         $Invoice = Invoices::where('user_id' , $id)->first();
         
         $devices = Parcel::where('userId',$id)->orderBy('id', 'DESC')->where('status','APPROUVÉ')->orderBy('id', 'DESC')->get();
-        return view("order.approvedOrder",compact('devices','Invoice','Parcel'));
+
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+      return view("order.approvedOrder",compact('message2','msg2','notiF2','notification2','devices','Invoice','Parcel'));
     }
 
 
@@ -159,7 +212,13 @@ class OrderController extends Controller
         $devices = Parcel::where('userId',$id)->orderBy('id', 'DESC')->where('status','APPROUVÉ')->orderBy('id', 'DESC')->get();
      }
       $Parcel = Parcel::first();
-      return view("order.approvedOrderSearch",compact('search','devices','Parcel'));
+      $notiF2 = Notification::first();
+      $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+
+      $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+      $msg2 = Message::first();
+        
+      return view("order.approvedOrderSearch",compact('message2','msg2','notiF2','notification2','search','devices','Parcel'));
 
     }
 
@@ -177,6 +236,16 @@ class OrderController extends Controller
         Invoices::where('productId',$request->userId)->update([
             'status' => 'Refus',
         ]);
+
+        DB::table('notifications')->where('userId' , $request->userId2)->update(array('or_status' => 'Neuf'));
+        Notification::insert([
+            'userId' => $request->userId2,
+            'description' => 'Commande refusée par ladministrateur',
+            'or_status' => 'Neuf',
+            'date' => date('Y-m-d'),
+            'created_at' => Carbon::now(),
+        ]);
+
         return response(['success','refuse']);
     }
 
@@ -257,11 +326,28 @@ class OrderController extends Controller
          // pay order
          public function payOrder(Request $request){
     
-    
+        $id = $request->userId;
+        $data  =  Invoices::where('productId',$request->userId)->first();
+        if($data->Paid === 'Nous. Payé' || $data->Paid === 'Un d. Payé'){
+            $data = [
+                'error' => true,
+                'message'=> 'Vous avez déjà payé'
+              ] ;
+
+              return response()->json($data);
+        }else{
             Invoices::where('productId',$request->userId)->update([
                 'adminPaid' => 'Payé',
+                'Paid' => 'Un d. Payé',
+                'userCreditDate' => date('Y-m-d'),
             ]);
-            return response(['success','Retour au client']);
+            $data = [
+                'success' => true,
+                'message'=> 'Vous avez payé cette commande'
+              ] ;
+              
+            return response()->json($data);
+        }
         }
 
 
@@ -275,7 +361,13 @@ class OrderController extends Controller
 
         $Parcel = Parcel::first();
         $devices = Invoices::orderBy('id', 'DESC')->where('totalPrice','=','Devis')->get();
-        return view("order.quotesOrder",compact('devices','Parcel'));
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+       
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+
+        return view("order.quotesOrder",compact('message','msg','notiF','notification','devices','Parcel'));
     }
 
 
@@ -289,8 +381,14 @@ class OrderController extends Controller
          }else{
              $devices = Invoices::where('totalPrice','=','Devis')->get();
          }
+         $notiF = Notification::first();
+         $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        
+         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+         $msg = Message::first();
+  
          $Parcel = Parcel::first();
-         return view("order.SearchuserQuote",compact('devices','Parcel','search'));
+         return view("order.SearchuserQuote",compact('message','msg','notiF','notification','devices','Parcel','search'));
    
        }
 
@@ -305,7 +403,7 @@ class OrderController extends Controller
             'quotePrice' => 'required|max:255',
         ],
         [
-            'quotePrice.required' => 'Ce champ est requis',
+            ']quotePrice.required' => 'Ce champ est requis',
          
         ]);
         $input = [  
@@ -318,6 +416,16 @@ class OrderController extends Controller
             'message' => 'Devis approuvés avec succès!',
             'alert_type' => 'success'
         );
+        DB::table('notifications')->where('userId' , $user)->update(array('or_status' => 'Neuf'));
+
+        Notification::insert([
+            'userId' => $userId,
+            'description' => 'Le devis a été approuvé',
+            'or_status' => 'Neuf',
+            'date' => date('Y-m-d'),
+            'created_at' => Carbon::now(),
+        ]);
+
         return Redirect('/userQuotes')->with( $notification);
     }
 
@@ -333,6 +441,51 @@ class OrderController extends Controller
     }
 
 
+
+
+    // upload pdf page
+    public function uploadPDFpage($id){
+        $Parcel = Parcel::first();
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+        $Invoice = Invoices::first();
+        $device = Parcel::find($id);
+        return view("order.uploadPDF",compact('notiF','notification','Invoice','device','Parcel'));
+    }
+
+
+    
+     // upload pdf
+     public function uploadpdf(Request $request,$id){
+        $validateData = $request->validate([
+            "pdf" => "required|mimes:pdf|max:10000"
+        ],
+        [
+            'pdf.required' => 'Ce champ est requis',
+            'pdf.mimes' => 'Sélectionnez uniquement le fichier PDF',
+         
+        ]);
+
+        $userid = $request->userId;
+        DB::table('invoices')->where('user_id', '=', $userid)->update(array('billStatus' => 'Neuf'));
+
+
+        $save = Parcel::find($id);
+
+        $pdf = $request->pdf;
+        $filename=time().'.'.$pdf->getClientOriginalExtension();
+        $request->pdf->move('pdf',$filename);
+
+        $save->pdf = $filename;
+        $save->save();
+        $notification = array(
+            'message' => 'Téléchargez le PDF avec succès!',
+            'alert_type' => 'success'
+        );
+        return Redirect('/userOrder')->with( $notification);
+    }
+
+
   
     
 
@@ -345,7 +498,15 @@ class OrderController extends Controller
         $Invoice = Invoices::where('user_id' , $id)->first();
         $totalPayment =
         $payment = user_total_credit::where('user_id',$id)->first();
-        return view("wallet.index",compact('Invoice','payment','Parcel'));
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+  
+  
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+  
+
+        return view("wallet.index",compact('message2','msg2','notiF2','notification2','Invoice','payment','Parcel'));
     }
 
 
@@ -365,7 +526,30 @@ class OrderController extends Controller
      public function quotesDetail($id){
         $Parcel = Parcel::first();
         $device = Parcel::find($id);
-        return view("order.quotesDetail",compact('device','Parcel'));
+        
+        $notiF = Notification::first();
+        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+       
+  
+
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+ 
+        return view("order.quotesDetail",compact('message','msg','notiF','notification','device','Parcel'));
     }
+
+    // noti ok
+    public function NotiOK(){
+        DB::table('notifications')->update(array('status' => NULL));
+        return response(['success']);
+    }
+
+      // noti2 ok
+      public function Noti2OK(){
+        $id = Auth::user()->id;
+        DB::table('notifications')->where('userId',$id)->update(array('or_status' => NULL));
+        return response(['success']);
+    }
+
 
 }

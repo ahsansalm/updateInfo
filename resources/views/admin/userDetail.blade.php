@@ -52,7 +52,7 @@
                         <td><p id="putBenifit">{{$user->profile->postal}}</p></td>
                         <th scope="row">9</th>
                         <td><h6>A quelle tranche horaire pouvons-nous vous contacter :</h6></td>
-                        <td><p id="putBrand">{{$user->profile->pre5}}</p></td>
+                        <td><p id="putBrand">{{$user->profile->pre5}} to {{$user->profile->pre_to}}</p></td>
                         </tr>
                         <tr>
 

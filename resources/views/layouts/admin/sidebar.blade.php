@@ -254,6 +254,11 @@
                     <a class="sidenav-item-link" href="{{url('/MyBill')}}">
                     <i class="fa fa-sticky-note" style="font-size:24px;color:white"></i>
                       <span class="nav-text">Mes factures</span> 
+                      @if(isset($Invoice))
+                          @if($Invoice->billStatus == "Neuf")
+                          <span class="badge bg-danger ml-3">Nuef</span>
+                          @endif
+                        @endif
                     </a>
                   </li>
                 <!-- my order -->
@@ -264,7 +269,7 @@
                       <span class="nav-text">Ou. Non Approuver</span> 
                       @if(isset($Parcel))
                         @if($Parcel->order_approved_noti == "Refus")
-                          <span class="badge bg-danger ml-1 px-1">Neuf</span> 
+                          <span class="badge bg-danger ml-3 px-1">Neuf</span> 
                         @endif
                        @endif
                     </a>
@@ -277,7 +282,7 @@
                       <span class="nav-text">Ou. Approuver
                       @if(isset($Parcel))
                         @if($Parcel->order_approved_noti == "Nouveau")
-                          <span class="badge bg-danger ml-1 px-1">Neuf</span> 
+                          <span class="badge bg-danger ml-3 px-1">Neuf</span> 
                         @endif
                        @endif
                       </span> 

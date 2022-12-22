@@ -5,6 +5,10 @@ use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Register;
 use App\Models\User;
+use App\Models\Parcel;
+use App\Models\Notification;
+use App\Models\Invoices;
+use App\Models\Message;
 use App\Models\user_total_credit;
 use Image;
 use DB;
@@ -76,7 +80,8 @@ class ProfileController extends Controller
             'photo' => $last_img,
             'preferenceNew' => $request->preferenceNew,
             'phone' => $request->phone,
-            'pre5' => $request->time,
+            'pre5' =>  Carbon::parse( $request->time)->format('g:i a'),
+            'pre_to' =>  Carbon::parse( $request->totime)->format('g:i a'),
             'created_at' => Carbon::now(),
         ]);
         $notification = array(
@@ -119,7 +124,8 @@ class ProfileController extends Controller
                 'town' => $request->town,
                 'preferenceNew' => $request->preferenceNew,
                 'phone' => $request->phone,
-                'pre5' => $request->time,
+                'pre5' =>  Carbon::parse( $request->time)->format('g:i a'),
+                'pre_to' =>  Carbon::parse( $request->totime)->format('g:i a'),
                 'created_at' => Carbon::now(),
             ]);
 
@@ -231,7 +237,18 @@ class ProfileController extends Controller
 
     // profile page of admin
     public function MyProfile(){
-        return view("profile.index");
+        $id = Auth::user()->id;
+        $Parcel = Parcel::where('userId' , $id)->first();
+        $Invoice = Invoices::where('user_id' , $id)->first();
+
+        
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+
+        return view("profile.index",compact('message2','msg2','notiF2','notification2','Parcel','Invoice'));
     }
     // profile update
     public function ProfileUpdate(Request $request,$id){
@@ -373,5 +390,20 @@ class ProfileController extends Controller
         
        
 
+    }
+       // chnage pasword
+       public function ChangPas(){
+        $id = Auth::user()->id;
+        $Invoice = Invoices::where('user_id' , $id)->first();
+        $Parcel = Parcel::where('userId' , $id)->first();
+
+        $notiF2 = Notification::first();
+$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+
+$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+$msg2 = Message::first();
+
+  
+        return view("profile.changPass",compact('message2','msg2','notiF2','notification2','Invoice','Parcel'));
     }
 }

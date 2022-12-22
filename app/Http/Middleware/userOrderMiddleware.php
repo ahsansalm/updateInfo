@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use App\Models\Notification;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Parcel;
+use App\Models\Message;
 use Auth;
 use DB;
 use App\Models\Invoices;
@@ -29,7 +30,11 @@ class userOrderMiddleware
             $totalOrder = DB::table('parcels')->count();
             $pendingOrder = DB::table('parcels')->where('status','pending')->count();
             $approvedOrder = DB::table('parcels')->where('status','Approved')->count();
-            return response()->view("order.userOrder",compact('devices','totalOrder','pendingOrder','approvedOrder','Parcel','Invoice')); 
+            $notiF = Notification::first();
+            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
+            $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+            $msg = Message::first();
+            return response()->view("order.userOrder",compact('message','msg','notiF','notification','devices','totalOrder','pendingOrder','approvedOrder','Parcel','Invoice')); 
 
         }
         else 

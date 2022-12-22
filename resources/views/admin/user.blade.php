@@ -188,9 +188,8 @@
                                     <th scope="col" class="text-white">Statut</th>
                                     <th scope="col" class="text-white">Dispositif Statut</th>
                                     <th scope="col" class="text-white">Prix</th>
+                                    <th scope="col" class="text-white">Payé</th>
                                     <th scope="col" class="text-white">Remarques</th>
-                                    <th scope="col" class="text-white">Nous. Payé</th>
-                                    <th scope="col" class="text-white">Un d. Payé</th>
                                     <th scope="col" class="text-white">Action</th>
                                 </tr>
                             </thead>
@@ -235,6 +234,22 @@
 
 
                                             <td>{{$device->totalPrice}}</td>
+
+
+
+                                            @if($device->Paid =='Un d. Payé')
+                                            <td><span class="badge badge-dark">{{$device->Paid}}</span></td>
+                                            @elseif($device->Paid =='Nous. Payé')
+                                            <td><span class="badge badge-primary">{{$device->Paid}}</span></td>
+                                            @else
+                                            <td><span class="badge badge-danger">{{$device->Paid}}</span></td>
+                                            @endif
+
+
+
+
+
+
                                             <td>
                                                 <a href="{{url('Approved/order/notes/'.$device->productId)}}">
                                                     <button type="button" class="btn btn-sm btn-warning">Remarques</button>
@@ -246,18 +261,8 @@
                                             
 
 
-                                            @if($device->payStatus =='Payé')
-                                            <td><span class="badge bagde-sm bg-success">Payé</span></td>
-                                             @else
-                                            <td><span class="badge bagde-sm bg-danger">{{$device->payStatus}}</span></td>
-                                            @endif
+                                           
 
-
-                                            @if($device->adminPaid =='Payé')
-                                            <td><span class="badge bagde-sm bg-success">Payé</span></td>
-                                             @else
-                                            <td><span class="badge bagde-sm bg-danger">{{$device->adminPaid}}</span></td>
-                                            @endif
 
 
 
