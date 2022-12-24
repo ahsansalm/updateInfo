@@ -54,7 +54,7 @@
                                             <td><b class="text-dark">{{$device->neww->marks}}</b></td>
                                             <td>{{$device->neww->product}}</td>
                                             <td>{{$device->servicedata->service}}</td>
-                                            @if($device->status =='Approved')
+                                            @if($device->status =='Approuvé')
                                             <td><span class="badge bagde-sm bg-success">{{$device->status}}</span></td>
                                             @elseif($device->status =='Refus')
                                             <td><span class="badge bagde bg-danger">Rufus</span></td>

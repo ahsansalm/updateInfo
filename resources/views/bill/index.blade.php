@@ -43,7 +43,7 @@
                                     <td><b class="text-dark">{{$invoice->totalPrice}}</b></td>
                                     <td>{{$invoice->date}}</td>
                                     @if($invoice->status =='Approuvé')
-                                    <td><span class="badge badge-success">{{$invoice->status}}</span></td>
+                                    <td><span class="badge badge-success">Approuvé</span></td>
                                       @elseif($invoice->status =='en attendant')
                                         <td><span class="badge" style="background: #FF7F50">{{$invoice->status}}</span></td>
                                     @else

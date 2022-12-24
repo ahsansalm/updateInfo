@@ -8,6 +8,7 @@ use App\Models\Invoices;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Models\Message;
+use App\Models\UserPayCreditsNoti;
 use Auth;
 use DB;
 class AdminMiddleware
@@ -35,9 +36,10 @@ class AdminMiddleware
             
             $supports = Parcel::all();
             $Invoice = Invoices::first();
-
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+            $payU = UserPayCreditsNoti::first();
             
-            return response()->view('problem.index',compact('message','msg','notification','notiF','Invoice','supports','Parcel'));
+            return response()->view('problem.index',compact('paymentU','payU','message','msg','notification','notiF','Invoice','supports','Parcel'));
         }
         else 
         { 

@@ -8,6 +8,7 @@ use App\Models\config\product;
 use App\Models\service;
 use App\Models\Parcel;
 use App\Models\Invoices;
+use App\Models\UserPayCreditsNoti;
 use App\Models\User;
 use App\Models\Notification;
 use App\Models\Message;
@@ -28,8 +29,11 @@ class ConfigurationController extends Controller
       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
+
+          $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
       
-        return view("config.index",compact('message','msg','notiF','notification','Invoice','Parcel'));
+        return view("config.index",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel'));
     }
     
 
@@ -42,7 +46,10 @@ class ConfigurationController extends Controller
       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
-        return view('config.brands.index',compact('message','msg','notiF','notification','brand','Parcel','Invoice'));
+
+          $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view('config.brands.index',compact('paymentU','payU','message','msg','notiF','notification','brand','Parcel','Invoice'));
     }
     // yajra  for brand
     public function getbrands()
@@ -96,7 +103,10 @@ class ConfigurationController extends Controller
       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
-        return view('config.brands.edit' ,compact('message','msg','notiF','notification','brand','Parcel','Invoice'));
+
+          $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view('config.brands.edit' ,compact('paymentU','payU','message','msg','notiF','notification','brand','Parcel','Invoice'));
 
     }
 
@@ -180,7 +190,10 @@ class ConfigurationController extends Controller
       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
-        return view('config.product.index',compact('message','msg','notiF','notification','brands','product','Parcel','Invoice'));
+
+          $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view('config.product.index',compact('paymentU','payU','message','msg','notiF','notification','brands','product','Parcel','Invoice'));
     }
 
 
@@ -244,7 +257,10 @@ class ConfigurationController extends Controller
       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
-        return view('config.product.edit' ,compact('message','msg','notiF','notification','products','brands','Parcel','Invoice'));
+
+          $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view('config.product.edit' ,compact('paymentU','payU','message','msg','notiF','notification','products','brands','Parcel','Invoice'));
 
     }
 
@@ -328,13 +344,16 @@ class ConfigurationController extends Controller
       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
-        return view('config.service.index',compact('message','msg','notiF','notification','brands','products','service','Parcel'));
+
+          $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view('config.service.index',compact('paymentU','payU','message','msg','notiF','notification','brands','products','service','Parcel'));
     }
 
       // yajra  for service
       public function getservices()
       {
-          return Datatables::of(service::query()->orderBy('id','desc'))
+          return Datatables::of(service::query()->where('showAdmin','ok')->orderBy('id','desc'))
           ->editColumn('marks_id',function(service $service){
             return $service->brand->product_name;
         })
@@ -376,6 +395,7 @@ class ConfigurationController extends Controller
                 'service' => $request->service,
                 'product_id' => $request->product_id,
                 'marks_id' => $request->marks_id,
+                'showAdmin' => 'ok',
                 'purchase_price' => $request->purchase_price,
                 'sale' => $request->price,
                 'stock' => $request->stock,
@@ -394,6 +414,7 @@ class ConfigurationController extends Controller
                     'service' => $request->service,
                     'product_id' => $request->product_id,
                     'marks_id' => $request->marks_id,
+                    'showAdmin' => 'ok',
                     'purchase_price' => $request->purchase_price,
                     'sale' => $request->price,
                     'stock' => $request->stock,
@@ -418,8 +439,9 @@ class ConfigurationController extends Controller
                 'service' => $request->service,
                 'product_id' => $request->product_id,
                 'marks_id' => $request->marks_id,
+                'showAdmin' => 'ok',
                 'purchase_price' => $request->purchase_price,
-                'sale' => 'Devis',
+                'sale' => 'devis',
                 'stock' => $request->stock,
                 'image' => $last_img,
                 'created_at' => Carbon::now(),
@@ -436,6 +458,7 @@ class ConfigurationController extends Controller
                     'service' => $request->service,
                     'product_id' => $request->product_id,
                     'marks_id' => $request->marks_id,
+                    'showAdmin' => 'ok',
                     'purchase_price' => $request->purchase_price,
                     'sale' => 'Devis',
                     'stock' => $request->stock,
@@ -460,10 +483,15 @@ class ConfigurationController extends Controller
       $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
+
+          $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         $products = product::all();
         $services = service::find($id);
         $Parcel = Parcel::first();
-        return view('config.service.edit',compact('message','msg','notiF','notification','notiF','notification','Invoice','brands','products','services','Parcel'));
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view('config.service.edit',compact('paymentU','payU','paymentU','payU','message','msg','notiF','notification','notiF','notification','Invoice','brands','products','services','Parcel'));
 
     }
    // update service
@@ -488,6 +516,7 @@ class ConfigurationController extends Controller
                 'service' => $request->service,
                 'product_id' => $request->product_id,
                 'marks_id' => $request->marks_id,
+                'showAdmin' => 'ok',
                 'sale' => $request->price,
                 'stock' => $request->stock,
                 'purchase_price' => $request->purchase_price,
@@ -505,6 +534,8 @@ class ConfigurationController extends Controller
                 'service' => $request->service,
                 'product_id' => $request->product_id,
                 'marks_id' => $request->marks_id,
+                
+                'showAdmin' => 'ok',
                 'purchase_price' => $request->purchase_price,
                 'sale' => $request->price,
                 'stock' => $request->stock,

@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 use App\Models\Invoices;
 use Auth;
 use Illuminate\Http\Request;
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\Support;
 use App\Models\Parcel;
 use App\Models\Notification;
 use App\Models\Message;
+use App\Models\UserPayCreditsNoti;
+use App\Models\AdminPayCreditsNoti;
 use DB;
 use App\Models\user_total_credit;
 use Yajra\Datatables\Datatables;
 use App\Models\ProblemReply;
 
+use App\Models\UsedCredit;
 class HomeController extends Controller
 {
     /**
@@ -41,7 +45,7 @@ class HomeController extends Controller
             $Invoice = Invoices::first();
             $Parcel = Parcel::first();
 
-            $notiF2 = Notification::first();
+            $notiF2 = Notification::where('userId',$id)->first();
             $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
 
             $notiF = Notification::first();
@@ -50,11 +54,19 @@ class HomeController extends Controller
             $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
             $msg = Message::first();
 
+          
+            $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+            $msg2 = Message::where('userId',$id)->first();
 
 
-            
-       $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-       $msg2 = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+            $payU = UserPayCreditsNoti::first();
+
+
+            $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+            $payU2 = AdminPayCreditsNoti::where('userId',$id)->first();
+
 
 
             $invoices = Invoices::where('user_id',$id)->orderBy('id', 'DESC')->take(5)->get();
@@ -65,7 +77,7 @@ class HomeController extends Controller
             $quotation = Invoices::orderBy('id', 'DESC')->where('totalPrice','=','Devis')->take(5)->get();
             $quotes = Invoices::where('user_id',$id)->where('totalPrice', 'Devis')->orderBy('id', 'DESC')->where('status','Approved')->get();
     
-            return view('admin.user',compact('msg','message','message2','msg2','notiF','notification','notiF2','notification2','quotation','orders','Invoice','users','totalUsers','countProblems','invoices','supports','devices','quotes','Parcel'));    
+            return view('admin.user',compact('paymentU','payU','paymentU2','payU2','msg','message','message2','msg2','notiF','notification','notiF2','notification2','quotation','orders','Invoice','users','totalUsers','countProblems','invoices','supports','devices','quotes','Parcel'));    
           
 
     
@@ -99,9 +111,20 @@ class HomeController extends Controller
        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
        $msg = Message::first();
 
+       $remain_data = UsedCredit::where('userId' , $id)->orderBy('id','desc')->get();
+
+       $payment = Payment::where('user_id' , $id)->orderBy('id', 'DESC')->get();
+
+       $payment_total = user_total_credit::where('user_id',$id)->first();
+        $total = $payment_total->totalCredits;
+        $remain = $payment_total->credits;
+
+        $used = $total-$remain;
 
 
-        return view("admin.userDetail",compact('message','msg','notiF','notification',
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view("admin.userDetail",compact('paymentU','payU','total','remain','used','payment','remain_data','message','msg','notiF','notification',
             'Invoice','Parcel','user','amount'));
     }
 

@@ -13,6 +13,7 @@ use App\Models\config\product;
 use App\Models\config\service;
 use App\Models\ProblemReply;
 use App\Models\Message;
+use App\Models\UserPayCreditsNoti;
 use Illuminate\Support\Carbon;
 use DB;
 use App\Models\Notification;
@@ -32,8 +33,9 @@ class inventoryController extends Controller
       $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
       $msg = Message::first();
       
-
-        return view("inventory.index",compact('message','msg','notiF','notification','Invoice','Parcel','service'));
+      $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+      $payU = UserPayCreditsNoti::first();
+        return view("inventory.index",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','service'));
     }
 
 
@@ -48,7 +50,10 @@ class inventoryController extends Controller
        
        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
        $msg = Message::first();
-        return view("inventory.add",compact('message','msg','notiF','notification','Parcel','brand'));
+
+       $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+       $payU = UserPayCreditsNoti::first();
+        return view("inventory.add",compact('paymentU','payU','message','msg','notiF','notification','Parcel','brand'));
     }
 
      // fetch product 

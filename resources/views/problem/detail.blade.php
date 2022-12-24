@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="dashboard_image" style="background: #0A0A0B !important;">
+            <div class="dashboard_image" >
                 <h1 class="text-center mt-5">Ecrivez votre réponse</h1> 
             </div>
             <div class="card-body text-dark">

@@ -11,6 +11,7 @@ use App\Models\Invoices;
 use App\Models\Message;
 use App\Models\Notification;
 
+use App\Models\UserPayCreditsNoti;
 class userQuotesMiddleware
 {
     /**
@@ -31,13 +32,14 @@ class userQuotesMiddleware
 
             $notiF = Notification::first();
             $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
-       
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+            $payU = UserPayCreditsNoti::first();
   
             $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
             $msg = Message::first();
     
             
-            return response()->view("order.quotesOrder",compact('message','msg','notiF','notification','devices','Parcel'));  
+            return response()->view("order.quotesOrder",compact('paymentU','payU','message','msg','notiF','notification','devices','Parcel'));  
         }
         else 
         { 

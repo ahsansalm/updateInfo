@@ -11,6 +11,7 @@ use App\Models\Parcel;
 use App\Models\Invoices;
 use App\Models\Notification;
 use App\Models\Message;
+use App\Models\UserPayCreditsNoti;
 use Auth;
 use Image;
 use Yajra\Datatables\Datatables;
@@ -45,7 +46,7 @@ class UserController extends Controller
         if($request->ajax())
         {
         $newOutput="";
-        $data = service::where('product_id',$request->value)->where('disable' , 'Actif')->get();
+        $data = service::where('product_id',$request->value)->where('showAdmin','ok')->where('disable' , 'Actif')->get();
         $table_sub = $data->count();
         if($table_sub > 0)
             {
@@ -78,7 +79,10 @@ class UserController extends Controller
             $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
             $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
             $msg = Message::first();
-            return view("adminUser.index",compact('message','msg','notification','notiF','Parcel','Invoice','users'));
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+            $payU = UserPayCreditsNoti::first();
+            return view("adminUser.index",compact('paymentU','payU','message','msg','notification','notiF','Parcel','Invoice','users'));
     }
 
 

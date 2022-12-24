@@ -2,7 +2,7 @@
 @section('content')
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 <!-- custom delte button -->
-<div id="myModal" class="modal fade">
+<!-- <div id="myModal" class="modal fade">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
 			<div class="modal-header flex-column">
@@ -31,7 +31,7 @@
 			</div>
 		</div>
 	</div>
-</div> 
+</div>  -->
 <!-- end custom delte button -->
 
 <div class="row">
@@ -98,7 +98,8 @@ $(function() {
                 title:'Action',
                 orderable:false,
                 render: function(data,type,full,meta){
-                    return ' <a class="btn btn-sm btn-primary" href="/service/edit/'+full.id+'">Éditer </a> <a class="btn btn-sm btn-danger" href="#myModal" class="trigger-btn" data-toggle="modal" onclick="return myFunction();">Handicapé</a>'
+                    return ' <a class="btn btn-sm btn-primary" href="/service/edit/'+full.id+'">Éditer </a> <a class="btn btn-sm btn-danger" href="/service/delete/'+full.id+'">Handicapé </a>'
+                    
                 }
             }
         ],

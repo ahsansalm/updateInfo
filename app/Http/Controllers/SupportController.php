@@ -12,6 +12,7 @@ use App\Models\Notification;
 use App\Models\Message;
 use Illuminate\Support\Carbon;
 use DB;
+use App\Models\AdminPayCreditsNoti;
 class SupportController extends Controller
 {
     //page 
@@ -27,15 +28,17 @@ class SupportController extends Controller
         
         $Parcel = Parcel::where('userId' , $id)->first();
         $Invoice = Invoices::where('user_id' , $id)->first();
-            $notiF2 = Notification::first();
-   $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
-    
-   $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-   $msg2 = Message::first();
-   
-   
+        $notiF2 = Notification::where('userId',$id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+            
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId',$id)->first();
+
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId',$id)->first();
+
      
-            return view("support.index",compact('message2','msg2','notiF2','notification2','Invoice','Parcel','supports'));    
+            return view("support.index",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','Invoice','Parcel','supports'));    
         }
     // edit support page
     public function EditSupport($id){
@@ -50,18 +53,23 @@ class SupportController extends Controller
         $Invoice = Invoices::where('user_id' , $userId)->first();
         $Parcel = Parcel::where('userId' , $userId)->first();
 
-        $notiF2 = Notification::first();
+        $notiF2 = Notification::where('userId' , $userId)->first();
         $notification2 = Notification::where('productId','=',NULL)->where('userId',$userId)->orderBy('id','desc')->get();
-        $message2 = Message::where('or_status','=','User')->where('userId',$userId)->orderBy('id','desc')->get();
-        $msg2 = Message::first();
+        $message2 = Message::where('or_status','=','User')->where('userId',$userId
+        )->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId' , $userId)->first();
         
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId' , $userId)->first();
+
+     
         
-        return view("support.detail",compact('message2','msg2','notiF2','notification2','Invoice','parcel','supports','reply','Parcel'));    
+        return view("support.detail",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','Invoice','parcel','supports','reply','Parcel'));    
     }
     // add problem
     public function AddSupport(Request $request){
         DB::table('parcels')->update(array('admin_noti' => 'Nouveau'));
-
+        DB::table('messages')->update(array('userStatus' => 'Neuf'));   
         $save = Parcel::find($request->productId);
         $save->admin_chat = "Nouveau";
         $save->save();
@@ -121,18 +129,22 @@ class SupportController extends Controller
          }else{
             $supports = Parcel::where('userId',$id)->get();      
        }
-         $Parcel = Parcel::first();
+         $Parcel = Parcel::where('userId',$id)->first();
 
-         $notiF2 = Notification::first();
-$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+         $notiF2 = Notification::where('userId',$id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        
+        
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId',$id)->first();
+
+
+
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId' , $id)->first();
+
    
- 
-$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-$msg2 = Message::first();
-
-
-   
-         return view("support.search",compact('message2','msg2','notiF2','notification2','Parcel','supports','search'));  
+         return view("support.search",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','Parcel','supports','search'));  
    
        }
 

@@ -50,7 +50,7 @@
                                             <td><b>{{$device->quotePrice}}</b></td>
                                             <td hidden><input type="text" value="{{$device->quotePrice}}" name="Price">{{$device->quotePrice}}</td>
                                             <td>
-                                            @if($device->status =='Approved')
+                                            @if($device->status =='Approuvé')
                                             <button type="submit" class="btn btn-sm btn-primary">Ordre Now</button>
                                             @else
                                             <button type="button" class="btn btn-sm btn-danger">Refuse</button>

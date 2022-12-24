@@ -35,7 +35,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php($i=1)
+                        @php($i=1)
                             @foreach($invoices as $invoice)
                                 <tr>
                                     <th scope="row"><b class="text-dark">{{$i++}}</b></th>
@@ -43,32 +43,59 @@
                                     <td><b class="text-dark">{{$invoice->totalPrice}}</b></td>
                                     <td>{{$invoice->date}}</td>
                                     @if($invoice->status =='Approuvé')
-                                    <td><span class="badge badge-success">{{$invoice->status}}</span></td>
+                                    <td><span class="badge badge-success">Approuvé</span></td>
                                       @elseif($invoice->status =='en attendant')
                                         <td><span class="badge" style="background: #FF7F50">{{$invoice->status}}</span></td>
                                     @else
                                     <td><span class="badge badge-danger">{{$invoice->status}}</span></td>
                                     @endif
 
-                                    @if($invoice->payStatus =='Payé')
-                                    <td><span class="badge badge-primary">{{$invoice->payStatus}}</span></td>
+                                    @if($invoice->Paid =='Un d. Payé')
+                                    <td><span class="badge badge-dark">{{$invoice->Paid}}</span></td>
+                                    @elseif($invoice->Paid =='Nous. Payé')
+                                    <td><span class="badge badge-primary">{{$invoice->Paid}}</span></td>
                                     @else
-                                    <td><span class="badge badge-danger">{{$invoice->payStatus}}</span></td>
+                                    <td><span class="badge badge-danger">{{$invoice->Paid}}</span></td>
                                     @endif
 
-                                    @if($invoice->adminPaid =='Payé')
-                                    <td><span class="badge bagde-sm bg-primary">Payé</span></td>
-                                        @else
-                                    <td><span class="badge bagde-sm bg-danger">{{$invoice->adminPaid}}</span></td>
-                                    @endif
-
-
-                                   
 
                                     <td>
-                                            <a href="{{url('/Mybill/Payer/'.$invoice->id)}}">
-                                                <button type="button" class="btn btn-success btn-sm">Payer</button>
-                                            </a>
+                                        <a href="{{url('/Mybill/Payer/detail/'.$invoice->id)}}" >
+                                            <button type="button" class="btn btn-warning btn-sm">Payer</button>
+                                        </a>
+
+
+<!-- custom delte button -->
+
+<!-- <div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+				    <i class="fa fa-check ml-2" style="font-size:48px;color:red"></i>
+				</div>						
+				<h4 class="modal-title w-100">Êtes-vous sûr?</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                
+                <a href="{{url('/Mybill/Payer/'.$invoice->id)}}">
+                        <button type="button" class="btn btn-success">Payer</button>
+                    </a>
+
+                
+			</div>
+		</div>
+	</div>
+</div>  -->
+
+<!-- end custom delte button -->
+
+
+
                                     </td>
 
                                     <td>
@@ -77,6 +104,9 @@
                                             </a>
                                     </td>
                                 </tr>
+
+
+                                
                             @endforeach
                         </tbody>
                     </table>

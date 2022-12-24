@@ -89,7 +89,7 @@
                             <tr>
                             <th scope="row">6</th>
                             <td><h6>Prix :</h6></td>
-                            <td>{{$device->servicedata->prices}}</td>
+                            <td>{{$device->totalPrice}}</td>
                             </tr>
 
                             <th scope="row">7</th>

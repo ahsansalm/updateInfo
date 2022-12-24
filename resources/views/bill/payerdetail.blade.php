@@ -20,6 +20,11 @@
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                 <form action="{{url('/Mybill/Payer/'.$bills->id)}}">
                         <input type="hidden" value="{{$bills->totalPrice}}" name="price">
+
+                        <input type="hidden" value="{{$bills->product}}" name="product">
+                        
+                        <input type="hidden" value="{{$bills->servicedata->service}}" name="service">
+
                             <button type="submit" class="btn btn-block btn-secondary prev-step">Payez maintenant</button>
                     </form>
 			</div>

@@ -8,9 +8,12 @@ use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\Message;
 use App\Models\user_total_credit;
+use App\Models\AdminPayCreditsNoti;
 use Illuminate\Http\Request;
+use App\Models\UserPayCreditsNoti;
 use App\Models\Invoices;
 use Image;
+use App\Models\UsedCredit;
 use Illuminate\Support\Carbon;
 class OrderController extends Controller
 {
@@ -25,13 +28,17 @@ class OrderController extends Controller
         
         $Invoice = Invoices::where('user_id' , $id)->first();
         $devices = Parcel::where('userId',$id)->orderBy('id', 'DESC')->where('status','en attendant')->orWhere('status','Refus')->orderBy('id', 'DESC')->get();
-        $notiF2 = Notification::first();
-$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
-  
-$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-$msg2 = Message::first();
+        $notiF2 = Notification::where('userId' , $id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId' , $id)->first();
 
-        return view("order.index",compact('message2','msg2','notiF2','notification2','Invoice','devices','Parcel'));
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId' , $id)->first();
+ 
+
+        return view("order.index",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','Invoice','devices','Parcel'));
     }
 
     
@@ -47,13 +54,17 @@ $msg2 = Message::first();
         }
         
         $Parcel = Parcel::where('userId' , $id)->first();
-        $notiF2 = Notification::first();
-$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
-  
-$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-$msg2 = Message::first();
+        $notiF2 = Notification::where('userId' , $id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId' , $id)->first();
 
-         return view("order.indexsearch",compact('message2','msg2','notiF2','notification2','search','devices','Parcel'));
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId' , $id)->first();
+ 
+
+         return view("order.indexsearch",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','search','devices','Parcel'));
    
        }
 
@@ -69,10 +80,14 @@ $msg2 = Message::first();
         $Parcel = Parcel::first();
         $notiF = Notification::first();
             $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
-            
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
-            return view("order.userOrder",compact('message','msg','notiF','notification','devices','Parcel','Invoice'));
+
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+            $payU = UserPayCreditsNoti::first();
+
+            return view("order.userOrder",compact('paymentU','payU','message','msg','notiF','notification','devices','Parcel','Invoice'));
     }
       // search order
       public function searchOrder(Request $request)
@@ -92,7 +107,10 @@ $msg2 = Message::first();
         $msg = Message::first();
 
         
-        return view("order.SearchuserOrder",compact('message','msg','notiF','notification','devices','Parcel','search'));
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+            $payU = UserPayCreditsNoti::first();
+
+        return view("order.SearchuserOrder",compact('paymentU','payU','message','msg','notiF','notification','devices','Parcel','search'));
   
       }
 
@@ -147,7 +165,10 @@ $msg2 = Message::first();
 
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
              $msg = Message::first();
-            return view("order.approvedOrderDetail",compact('message','msg','notiF','notification','device','Parcel','Invoice'));
+             
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+            return view("order.approvedOrderDetail",compact('paymentU','payU','message','msg','notiF','notification','device','Parcel','Invoice'));
         }
 
 
@@ -168,8 +189,11 @@ $msg2 = Message::first();
             $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
             $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
-            return view("order.approvedOrderNotes",compact('message','msg','notiF','notification','device','Parcel'));
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+            return view("order.approvedOrderNotes",compact('paymentU','payU','message','msg','notiF','notification','device','Parcel'));
         }
+
             // order notes
             public function orderNotes(Request $request,$id){
                 Parcel::find($id)->update([
@@ -192,11 +216,17 @@ $msg2 = Message::first();
         
         $devices = Parcel::where('userId',$id)->orderBy('id', 'DESC')->where('status','APPROUVÉ')->orderBy('id', 'DESC')->get();
 
-        $notiF2 = Notification::first();
-$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
-$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-$msg2 = Message::first();
-      return view("order.approvedOrder",compact('message2','msg2','notiF2','notification2','devices','Invoice','Parcel'));
+        $notiF2 = Notification::where('userId' , $id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId' , $id)->first();
+
+
+        
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId' , $id)->first();
+ 
+      return view("order.approvedOrder",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','devices','Invoice','Parcel'));
     }
 
 
@@ -211,14 +241,20 @@ $msg2 = Message::first();
       }else{
         $devices = Parcel::where('userId',$id)->orderBy('id', 'DESC')->where('status','APPROUVÉ')->orderBy('id', 'DESC')->get();
      }
-      $Parcel = Parcel::first();
-      $notiF2 = Notification::first();
+      $Parcel = Parcel::where('userId' , $id)->first();
+      $notiF2 = Notification::where('userId' , $id)->first();
       $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
 
       $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-      $msg2 = Message::first();
+      $msg2 = Message::where('userId' , $id)->first();
+
+
+      
+      $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+      $payU2 = AdminPayCreditsNoti::where('userId' , $id)->first();
+
         
-      return view("order.approvedOrderSearch",compact('message2','msg2','notiF2','notification2','search','devices','Parcel'));
+      return view("order.approvedOrderSearch",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','search','devices','Parcel'));
 
     }
 
@@ -255,6 +291,15 @@ $msg2 = Message::first();
         Parcel::where('userId',$request->userId2)->update([
             'device_noti' => 'Nouveau',
         ]);
+
+        // DB::table('notifications')->where('userId' , $request->userId2)->update(array('or_status' => 'Neuf'));
+        // Notification::insert([
+        //     'userId' => $request->userId2,
+        //     'description' => 'Commande approuvée par ladministrateur',
+        //     'or_status' => 'Neuf',
+        //     'date' => date('Y-m-d'),
+        //     'created_at' => Carbon::now(),
+        // ]);
 
         $save = Parcel::find($request->userId);
         $save->admin_status = 'Reçu';
@@ -345,6 +390,17 @@ $msg2 = Message::first();
                 'success' => true,
                 'message'=> 'Vous avez payé cette commande'
               ] ;
+
+
+              DB::table('admin_pay_credits_notis')->update(array('status' => 'Neuf'));
+              AdminPayCreditsNoti::insert([
+                'userId' => $request->userId2,
+                'productId' => $request->userId,
+                'description' =>'Administrateur a payé votre commande',
+                'status' => 'Neuf',
+                'created_at' => Carbon::now(),
+            ]);
+
               
             return response()->json($data);
         }
@@ -367,7 +423,9 @@ $msg2 = Message::first();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
 
-        return view("order.quotesOrder",compact('message','msg','notiF','notification','devices','Parcel'));
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view("order.quotesOrder",compact('paymentU','payU','message','msg','notiF','notification','devices','Parcel'));
     }
 
 
@@ -388,7 +446,7 @@ $msg2 = Message::first();
          $msg = Message::first();
   
          $Parcel = Parcel::first();
-         return view("order.SearchuserQuote",compact('message','msg','notiF','notification','devices','Parcel','search'));
+         return view("order.SearchuserQuote",compact('paymentU','payU','message','msg','notiF','notification','devices','Parcel','search'));
    
        }
 
@@ -408,7 +466,7 @@ $msg2 = Message::first();
         ]);
         $input = [  
             'quotePrice' => $request->quotePrice,
-            'status' => 'Approved',
+            'status' => 'Approuvé',
         ];
             Invoices::where('productId', '=', $id)->update($input);
 
@@ -416,7 +474,7 @@ $msg2 = Message::first();
             'message' => 'Devis approuvés avec succès!',
             'alert_type' => 'success'
         );
-        DB::table('notifications')->where('userId' , $user)->update(array('or_status' => 'Neuf'));
+        DB::table('notifications')->where('userId' , $userId)->update(array('or_status' => 'Neuf'));
 
         Notification::insert([
             'userId' => $userId,
@@ -449,8 +507,17 @@ $msg2 = Message::first();
         $notiF = Notification::first();
         $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
         $Invoice = Invoices::first();
+
+
+        
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
+        $msg = Message::first();
+
+
         $device = Parcel::find($id);
-        return view("order.uploadPDF",compact('notiF','notification','Invoice','device','Parcel'));
+        return view("order.uploadPDF",compact('paymentU','payU','message','msg','notiF','notification','Invoice','device','Parcel'));
     }
 
 
@@ -498,25 +565,50 @@ $msg2 = Message::first();
         $Invoice = Invoices::where('user_id' , $id)->first();
         $totalPayment =
         $payment = user_total_credit::where('user_id',$id)->first();
-        $notiF2 = Notification::first();
-$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        $notiF2 = Notification::where('userId' , $id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        
+        
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId' , $id)->first();
   
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId' , $id)->first();
   
-$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-$msg2 = Message::first();
-  
+       
 
-        return view("wallet.index",compact('message2','msg2','notiF2','notification2','Invoice','payment','Parcel'));
+        return view("wallet.index",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','Invoice','payment','Parcel'));
     }
 
 
         // support walletCredit
         public function SupportWalletCredit(){
+          
 
             $id = Auth::user()->id;
+            $notiF2 = Notification::where('userId' , $id)->first();
+            $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+              
+            $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+            $payU2 = AdminPayCreditsNoti::where('userId' , $id)->first();
+    
+              
+            $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+            $msg2 = Message::where('userId' , $id)->first();
+
             $Parcel = Parcel::where('userId' , $id)->first();
             $payment = Payment::where('user_id' , $id)->orderBy('id', 'DESC')->get();
-            return view("wallet.credit",compact('payment','payment','Parcel'));
+
+
+            $remain_data = UsedCredit::where('userId' , $id)->orderBy('id','desc')->get();
+            
+            $payment_total = user_total_credit::where('user_id',$id)->first();
+            $total = $payment_total->totalCredits;
+            $remain = $payment_total->credits;
+
+            $used = $total-$remain;
+
+            return view("wallet.credit",compact('remain_data','used','remain','paymentU2','payU2','message2','msg2','notiF2','notification2','total','payment','Parcel'));
         }
 
 
@@ -535,7 +627,10 @@ $msg2 = Message::first();
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
  
-        return view("order.quotesDetail",compact('message','msg','notiF','notification','device','Parcel'));
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        
+        return view("order.quotesDetail",compact('paymentU','payU','message','msg','notiF','notification','device','Parcel'));
     }
 
     // noti ok
@@ -551,5 +646,39 @@ $msg2 = Message::first();
         return response(['success']);
     }
 
+
+        // msg ok
+        public function msgOK(){
+            DB::table('messages')->update(array('userStatus' => NULL));
+            return response(['success']);
+        }
+
+
+
+              // msg2 ok
+      public function msg2OK(){
+        $id = Auth::user()->id;
+        DB::table('messages')->where('userId',$id)->update(array('adminId' => NULL));
+        return response(['success']);
+    }
+
+
+    
+        // payU ok
+        public function payUOK(){
+            DB::table('user_pay_credits_notis')->update(array('status' => NULL));
+            return response(['success']);
+        }
+
+
+
+        
+
+              // payU ok
+      public function payU2OK(){
+        $id = Auth::user()->id;
+        DB::table('admin_pay_credits_notis')->where('userId',$id)->update(array('status' => NULL));
+        return response(['success']);
+    }
 
 }

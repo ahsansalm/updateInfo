@@ -9,6 +9,7 @@ use App\Models\Parcel;
 use App\Models\Invoices;
 use App\Models\Message;
 use Illuminate\Support\Carbon;
+use App\Models\UserPayCreditsNoti;
 use Auth;
 use App\Models\Notification;
 use Yajra\Datatables\Datatables;
@@ -23,9 +24,10 @@ class ToDoListController extends Controller
 
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         
-        return view("toDoList.index",compact('message','msg','notiF','notification','Invoice','Parcel'));
+        return view("toDoList.index",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel'));
     }
     // 
        // yajra  for list
@@ -67,10 +69,11 @@ class ToDoListController extends Controller
 
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
       
   
-        return view("toDoList.edit",compact('message','msg','notiF','notification','Invoice','task','Parcel'));
+        return view("toDoList.edit",compact('paymentU','payU','message','msg','notiF','notification','Invoice','task','Parcel'));
     }
 
     // task edit
@@ -142,8 +145,9 @@ class ToDoListController extends Controller
 
     $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
-        return view("toDoList.complete",compact('message','msg','notiF','notification','Invoice','Parcel'));
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view("toDoList.complete",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel'));
     }
      // yajra  for list
      public function getcom()
@@ -165,10 +169,11 @@ class ToDoListController extends Controller
 
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("toDoList.favrouite",compact('message','msg','notiF','notification','Invoice','Parcel'));
+        return view("toDoList.favrouite",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel'));
     }
      // yajra  for list
      public function getfav()
@@ -193,9 +198,10 @@ class ToDoListController extends Controller
 
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         
-        return view("toDoList.vendorlist",compact('message','msg','notiF','notification','Invoice','Parcel'));
+        return view("toDoList.vendorlist",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel'));
      }
 
 
@@ -238,9 +244,10 @@ class ToDoListController extends Controller
 
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-        return view("toDoList.editvendor",compact('message','msg','notiF','notification','Invoice','vendor','Parcel'));
+        return view("toDoList.editvendor",compact('paymentU','payU','message','msg','notiF','notification','Invoice','vendor','Parcel'));
     }
 
     public function updatevendor(Request $request, $id){
@@ -294,8 +301,9 @@ class ToDoListController extends Controller
 
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
-        return view("toDoList.detailvendor",compact('message','msg','notiF','notification','Invoice','vendor','Parcel'));
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+        return view("toDoList.detailvendor",compact('paymentU','payU','message','msg','notiF','notification','Invoice','vendor','Parcel'));
     }
 
 
@@ -309,10 +317,11 @@ class ToDoListController extends Controller
 
         $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
         $msg = Message::first();
- 
+    $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         
         $Invoice = Invoices::where('totalPrice','Devis')->first();
-    return view("toDoList.favrouiteVendor",compact('message','msg','notiF','notification','Invoice','Parcel'));
+    return view("toDoList.favrouiteVendor",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel'));
     }
     // yajra  for list
     public function getvendorfav()

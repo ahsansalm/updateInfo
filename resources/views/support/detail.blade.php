@@ -2,8 +2,8 @@
 @section('content')
 <div class="row">
     <div class="col-12">
-        <div class="dashboard_image" style="background: #0A0A0B !important;">
-            <h1 class="text-center mt-5">Detail:</h1> 
+        <div class="dashboard_image" >
+            <h1 class="text-center mt-5">Détail:</h1> 
         </div>
     </div>
 

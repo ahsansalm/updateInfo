@@ -182,6 +182,15 @@ Route::get('/SuccessParcel',[SendParcelController::class, 'successParcel'])->nam
 // insert parcel
 Route::post('/insert/parcel',[SendParcelController::class, 'insert']);
 
+
+
+// insert user parcel request
+Route::post('/user/add/request/data',[SendParcelController::class, 'insertUserParcel']);
+
+// User/add/product
+Route::get('/User/add/product',[SendParcelController::class, 'userAdd'])->name('userAdd');
+
+
 // my devices page
 Route::get('/MyDevices',[DeviceController::class, 'myDevices'])->name('myDevices');
 // device edit page
@@ -266,8 +275,22 @@ Route::get('/Noti/ok',[OrderController::class, 'NotiOK'])->name('NotiOK');
 //Noti2/ok
 Route::get('/Noti2/ok',[OrderController::class, 'Noti2OK'])->name('Noti2OK');
 
+
+//msg/ok
+Route::get('/msg/ok',[OrderController::class, 'msgOK'])->name('msgOK');
+//msg2/ok
+Route::get('/msg2/ok',[OrderController::class, 'msg2OK'])->name('msg2OK');
+
 // pay order
 Route::post('/order/pay',[OrderController::class, 'payOrder']);
+
+
+//payU/ok
+Route::get('/payU/ok',[OrderController::class, 'payUOK'])->name('payUOK');
+
+//payU2/ok
+Route::get('/payU2/ok',[OrderController::class, 'payU2OK'])->name('payU2OK');
+
 
 
 // uploadPDF/page

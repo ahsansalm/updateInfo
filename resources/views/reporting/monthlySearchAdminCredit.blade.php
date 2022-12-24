@@ -1,16 +1,16 @@
-@extends('layouts.informathic3')
+@extends('layouts.informathic2')
 @section('content')
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
 <div class="row">
     <div class="col-12 text-center">
         <div class="dashboard_image">
-        <h1 class="brand_device mt-5">Rapport mensuel sur les crédits administratifs</h1> 
+            <h1 class="brand_device mt-5">Rapport mensuel sur les crédits administratifs</h1> 
         </div>
     </div>
 </div>
 
-<div clars="row my-3">
+<div class="row my-3">
     
 
     <div class="col-md-4">
@@ -38,18 +38,16 @@
         </div>
     </div>
     <div class="col-12 text-right">
-        <form action="{{url('monthlyOrderAdminCreditPDF')}}">
-            <input type="hidden" class="form-control" value="{{$search}}" name="search" placeholder="Ordre de recherche par nom d'utilisateur...">
-            <button type="submit" class="btn btn-sm btn-success float-right mt-2">Exporter PDF</button>
-        </form>
-
+        <a href="{{url('monthlyOrderAdminCreditPDF')}}">
+            <button type="button" class="btn btn-sm btn-success float-right mt-2">Exporter PDF</button>
+        </a>
     </div>
 
     <div class="col-12 mt-3">
             <form action="{{url('monthly/admincredit/report/search')}}">
                 <div class="row">
                         <div class="col-10">
-                            <input type="search" class="form-control"  value="{{$search}}" name="search" placeholder="Rechercher une commande par nom de produit...">
+                            <input type="search" class="form-control" value="{{$search}}" name="search" placeholder="Rechercher une commande par nom de produit...">
                         </div>
                         <div class="col-2">
                          <button type="submit" class="btn btn-block btn-primary">Chercher</button>
@@ -86,7 +84,7 @@
                                             <td><span class="badge bagde-sm bg-success">{{$device->status}}</span></td>
                                             <td>{{$device->totalPrice}} €</td>
                                             <td>{{$device->servicedata->purchase_price}} €</td>
-                                            <td>{{$device->date}} </td>
+                                            <td>{{$device->userCreditDate}} </td>
                                         </tr>
                                     </form>
                                 @endforeach

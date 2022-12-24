@@ -6,6 +6,8 @@ use App\Models\Payment;
 use App\Models\Credit;
 use App\Models\user_total_credit;
 use Illuminate\Http\Request;
+use App\Models\UserPayCreditsNoti;
+use Illuminate\Support\Carbon;
 use Omnipay\Omnipay;
 use Auth;
 use DB;
@@ -80,11 +82,23 @@ class PaymentController extends Controller
 
                 $old_val =  user_total_credit::where('user_id' ,'=', $id)->first();
                 $credits = $old_val->credits;
+                $totalCredits =$old_val->totalCredits;
                 $new_val =   $arr['transactions'][0]['amount']['total'] + $credits;
-                
+                $totalCreditsnew =   $arr['transactions'][0]['amount']['total'] + $totalCredits;
 
                 user_total_credit::where('user_id',$id)->update([
                     'credits' => $new_val,
+                    'totalCredits' => $totalCreditsnew,
+                ]);
+
+
+                DB::table('user_pay_credits_notis')->update(array('status' => 'Neuf'));
+                UserPayCreditsNoti::insert([
+                  'userId' => $id,
+                  'productId' => $arr['transactions'][0]['amount']['total'] ,
+                  'description' =>'Acheter des crédits',
+                  'status' => 'Neuf',
+                  'created_at' => Carbon::now(),
                 ]);
 
 

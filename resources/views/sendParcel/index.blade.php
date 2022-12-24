@@ -90,6 +90,18 @@
                                         </div>
                                         
                                     </div>
+
+<div class="col-md-12 text-center">
+    <div class="alert alert-primary" role="alert">
+        <p>Si votre service n'existe pas alors
+          <a href="{{url('User/add/product')}}" class="ml-2">
+            <button class="btn next-step">
+            Cliquez sur moi
+            </button>
+          </a>
+        </p>  
+    </div>                                 
+</div>
                                     <ul class="list-inline pull-right">
                                         <li><button type="button" class="default-btn next-step">Passez à l'étape suivante <i class="fa fa-long-arrow-right ml-2"></i></button></li>
                                     </ul>
@@ -265,9 +277,9 @@
                                     </div>
                                     <div class="row">
                                         
-                                    <div class="col-md-6 mt-5 text-dark">
-                                        <h6 class="mt-3"><b>Pour R2, la compensation est jusqu'à 200$ et remise en main propre</b></h6>
-                                    </div>
+                                        <div class="col-md-6 mt-5 text-dark">
+                                            <h6 class="mt-3"><b>Pour R2, la compensation est jusqu'à 200$ et remise en main propre</b></h6>
+                                        </div>
                                         <div class="col-md-6 mt-5">
                                             <select name="shipment" id="shipment" class="form-control" id="">
                                                 <option value="R1(Envoyer un colis par la poste)">R1 (Envoyer un colis par la poste)</option>

@@ -10,6 +10,7 @@ use App\Models\Notification;
 use App\Models\Invoices;
 use App\Models\Message;
 use App\Models\user_total_credit;
+use App\Models\AdminPayCreditsNoti;
 use Image;
 use DB;
 use Auth;
@@ -242,13 +243,18 @@ class ProfileController extends Controller
         $Invoice = Invoices::where('user_id' , $id)->first();
 
         
-        $notiF2 = Notification::first();
-$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        $notiF2 = Notification::where('userId',$id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
 
-$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-$msg2 = Message::first();
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId',$id)->first();
 
-        return view("profile.index",compact('message2','msg2','notiF2','notification2','Parcel','Invoice'));
+
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId',$id)->first();
+
+
+        return view("profile.index",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','Parcel','Invoice'));
     }
     // profile update
     public function ProfileUpdate(Request $request,$id){
@@ -397,13 +403,16 @@ $msg2 = Message::first();
         $Invoice = Invoices::where('user_id' , $id)->first();
         $Parcel = Parcel::where('userId' , $id)->first();
 
-        $notiF2 = Notification::first();
-$notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
+        $notiF2 = Notification::where('userId',$id)->first();
+        $notification2 = Notification::where('productId','=',NULL)->where('userId',$id)->orderBy('id','desc')->get();
 
-$message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
-$msg2 = Message::first();
+        $message2 = Message::where('or_status','=','User')->where('userId',$id)->orderBy('id','desc')->get();
+        $msg2 = Message::where('userId',$id)->first();
+
+        $paymentU2 = AdminPayCreditsNoti::where('userId',$id)->orderBy('id','desc')->get();
+        $payU2 = AdminPayCreditsNoti::where('userId',$id)->first();
 
   
-        return view("profile.changPass",compact('message2','msg2','notiF2','notification2','Invoice','Parcel'));
+        return view("profile.changPass",compact('paymentU2','payU2','message2','msg2','notiF2','notification2','Invoice','Parcel'));
     }
 }

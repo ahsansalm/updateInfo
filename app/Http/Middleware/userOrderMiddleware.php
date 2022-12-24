@@ -9,6 +9,7 @@ use App\Models\Message;
 use Auth;
 use DB;
 use App\Models\Invoices;
+use App\Models\UserPayCreditsNoti;
 class userOrderMiddleware
 {
     /**
@@ -34,7 +35,11 @@ class userOrderMiddleware
             $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
             $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
             $msg = Message::first();
-            return response()->view("order.userOrder",compact('message','msg','notiF','notification','devices','totalOrder','pendingOrder','approvedOrder','Parcel','Invoice')); 
+
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+            $payU = UserPayCreditsNoti::first();
+            return response()->view("order.userOrder",compact('paymentU','payU','message','msg','notiF','notification','devices','totalOrder','pendingOrder','approvedOrder','Parcel','Invoice')); 
 
         }
         else 

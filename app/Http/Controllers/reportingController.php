@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Support;
 use App\Models\Notification;
 use App\Models\Parcel;
+use App\Models\UserPayCreditsNoti;
 use App\Models\Message;
 use DB;
 use Yajra\Datatables\Datatables;
@@ -26,27 +27,29 @@ class reportingController extends Controller
            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
            $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
     
 
         $allorder =  DB::table('invoices')->where('totalPrice' ,'!=', 'Devis')->count();
         $pendingorder = DB::table('invoices')->where('totalPrice' ,'!=', 'Devis')->where('status' ,'=', 'pending')->count();
         $approvedorder = DB::table('invoices')->where('totalPrice' ,'!=', 'Devis')->where('status' ,'=', 'Approuvé')->count();
         $sale = DB::table('invoices')->where('status','=','Approuvé')
-                ->join('services', 'invoices.service_id', '=', 'services.id')  
-                ->select('services.sale')      
-                ->sum('sale');
+                ->select('invoices.totalPrice')      
+                ->sum('totalPrice');
         $pur1 = DB::table('services')->sum('stock');
         $pur2 = DB::table('services')->sum('purchase_price');
         $purchase = $pur1 * $pur2;
 
 
-
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         
         $todaySale = DB::table('invoices')->where('status','=','Approuvé')
             ->whereDate('date', now())
-            ->join('services', 'invoices.service_id', '=', 'services.id')  
-            ->select('services.sale')      
-            ->sum('sale');
+            ->select('invoices.totalPrice')      
+            ->sum('totalPrice');
 
 
 
@@ -58,9 +61,8 @@ class reportingController extends Controller
 
 
             $saleCredit = DB::table('invoices')->where('payStatus','=','Payé')
-            ->join('services', 'invoices.service_id', '=', 'services.id')  
-            ->select('services.sale')      
-            ->sum('sale');
+            ->select('invoices.totalPrice')      
+            ->sum('totalPrice');
 
             $profitCredit = $saleCredit - $purchaseCredit;
 
@@ -74,14 +76,13 @@ class reportingController extends Controller
 
 
             $adminsaleCredit = DB::table('invoices')->where('adminPaid','=','Payé')
-            ->join('services', 'invoices.service_id', '=', 'services.id')  
-            ->select('services.sale')      
-            ->sum('sale');
+            ->select('invoices.totalPrice')      
+            ->sum('totalPrice');
 
             $adminprofitCredit = $adminsaleCredit - $adminpurchaseCredit;
 
 
-        return view("reporting.index",compact('message','msg','notiF','notification','profitCredit','saleCredit','purchaseCredit','Invoice',
+        return view("reporting.index",compact('paymentU','payU','message','msg','notiF','notification','profitCredit','saleCredit','purchaseCredit','Invoice',
         'adminpurchaseCredit','adminsaleCredit','adminprofitCredit',
         'Parcel','allorder','pendingorder','approvedorder','sale','purchase','todaySale'));
     }   
@@ -105,8 +106,12 @@ class reportingController extends Controller
        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
        $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
        $msg = Message::first();
+
+       $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+       $payU = UserPayCreditsNoti::first();
+
         $devices = Invoices::where('service_id','!=','Devis')->where('status','=','Approuvé')->whereDate('date', now())->get();
-        return view("reporting.today",compact('message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
+        return view("reporting.today",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
     }
 
 
@@ -149,7 +154,10 @@ class reportingController extends Controller
           $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
             $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
-           return view("reporting.todaySearch",compact('message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit','search'));
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+           return view("reporting.todaySearch",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit','search'));
      
          }
 
@@ -246,8 +254,11 @@ class reportingController extends Controller
        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
          $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+        $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         $devices = Invoices::where('totalPrice','!=','Devis')->where('status','=','Approuvé')->whereMonth('date', date('m'))->whereYear('date', date('Y'))->get();
-        return view("reporting.monthly",compact('notification','notiF','Invoice','Parcel','devices','sale','purchase','profit'));
+        return view("reporting.monthly",compact('paymentU','payU','message','msg','notification','notiF','Invoice','Parcel','devices','sale','purchase','profit'));
     }
 
 
@@ -294,8 +305,11 @@ class reportingController extends Controller
            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
             
-            return view("reporting.monthlySearch",compact('notification','notiF','search','Invoice','Parcel','devices','sale','purchase','profit'));
+            return view("reporting.monthlySearch",compact('paymentU','payU','message','msg','notification','notiF','search','Invoice','Parcel','devices','sale','purchase','profit'));
       
           }
 
@@ -322,8 +336,11 @@ class reportingController extends Controller
            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
             $devices = Invoices::where('totalPrice','!=','Devis')->where('status','=','Approuvé')->whereMonth('date', date('m'))->whereYear('date', date('Y'))->get();
-            return view("reporting.search",compact('message','msg','notification','notiF','Invoice','Parcel','devices','sale','purchase','profit'));
+            return view("reporting.search",compact('paymentU','payU','message','msg','notification','notiF','Invoice','Parcel','devices','sale','purchase','profit'));
         }
 
 
@@ -409,8 +426,11 @@ class reportingController extends Controller
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
 
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+
             $devices = Invoices::whereBetween('date',[$request->from_date , $request->to_date])->where('status','=','Approuvé')->get();
-            return view("reporting.searchByDate",compact('message','msg','notiF','notification','sale','purchase','profit','from_date','to_date','Invoice','Parcel','devices'));
+            return view("reporting.searchByDate",compact('paymentU','payU','message','msg','notiF','notification','sale','purchase','profit','from_date','to_date','Invoice','Parcel','devices'));
 
             // dd($from_date , $to_date);
 
@@ -443,8 +463,11 @@ class reportingController extends Controller
        $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
          $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
         $devices = Invoices::where('service_id','!=','Devis')->where('status','=','Approuvé')->where('Paid','=','Nous. Payé')->whereDate('userCreditDate', now())->get();
-        return view("reporting.UserCredittoday",compact('message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
+        return view("reporting.UserCredittoday",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
     }
 
 
@@ -495,8 +518,11 @@ class reportingController extends Controller
               $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
          $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
                
-               return view("reporting.todaySearchCredit",compact('message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
+               return view("reporting.todaySearchCredit",compact('paymentU','payU','message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
          
              }
 
@@ -523,8 +549,11 @@ class reportingController extends Controller
            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
             $devices = Invoices::where('service_id','!=','Devis')->where('payStatus','=','Payé')->whereMonth('userCreditDate', date('m'))->whereYear('userCreditDate', date('Y'))->get();
-            return view("reporting.UserCreditmonthly",compact('message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
+            return view("reporting.UserCreditmonthly",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
     }
 
 
@@ -565,11 +594,14 @@ class reportingController extends Controller
                $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
                  $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
                 $devices = Invoices::where('service_id','!=','Devis')->where('payStatus','=','Payé')->whereMonth('userCreditDate', date('m'))->whereYear('userCreditDate', date('Y'))->get();
               }
              $Parcel = Parcel::first();
              $Invoice = Invoices::where('totalPrice','Devis')->first();
-             return view("reporting.monthlySearchCredit",compact('message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
+             return view("reporting.monthlySearchCredit",compact('paymentU','payU','message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
        
            }
            
@@ -594,8 +626,11 @@ class reportingController extends Controller
            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
             $devices = Invoices::where('totalPrice','!=','Devis')->where('status','=','Approuvé')->whereMonth('date', date('m'))->whereYear('date', date('Y'))->get();
-            return view("reporting.searchCredit",compact('message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
+            return view("reporting.searchCredit",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
         }
 
 
@@ -634,9 +669,12 @@ class reportingController extends Controller
                 $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
                   $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
      
                  $devices = Invoices::whereBetween('userCreditDate',[$request->from_date , $request->to_date])->where('status','=','Approuvé')->get();
-                 return view("reporting.searchByDateUserCredit",compact('message','msg','notiF','notification','sale','purchase','profit','from_date','to_date','Invoice','Parcel','devices'));
+                 return view("reporting.searchByDateUserCredit",compact('paymentU','payU','message','msg','notiF','notification','sale','purchase','profit','from_date','to_date','Invoice','Parcel','devices'));
      
                  // dd($from_date , $to_date);
      
@@ -666,8 +704,11 @@ class reportingController extends Controller
            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
             $devices = Invoices::where('service_id','!=','Devis') ->where('Paid','=','Un d. Payé')->where('status','=','Approuvé')->whereDate('userCreditDate', now())->get();
-            return view("reporting.AdminCredittoday",compact('message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
+            return view("reporting.AdminCredittoday",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
         }
 
 
@@ -713,9 +754,12 @@ class reportingController extends Controller
                  $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
                    $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
                  $Parcel = Parcel::first();
                  $Invoice = Invoices::where('totalPrice','Devis')->first();
-                 return view("reporting.todaySearchAdminCredit",compact('message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
+                 return view("reporting.todaySearchAdminCredit",compact('paymentU','payU','message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
            
                }
 
@@ -740,9 +784,12 @@ class reportingController extends Controller
            $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
              $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
             $profit= $sale - $purchase;
             $devices = Invoices::where('service_id','!=','Devis') ->where('Paid','=','Un d. Payé')->whereMonth('userCreditDate', date('m'))->whereYear('userCreditDate', date('Y'))->get();
-            return view("reporting.AdminCreditmonthly",compact('message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
+            return view("reporting.AdminCreditmonthly",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices','sale','purchase','profit'));
     }
 
 
@@ -795,7 +842,10 @@ class reportingController extends Controller
             $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
               $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
-             return view("reporting.monthlySearchAdminCredit",compact('message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+             return view("reporting.monthlySearchAdminCredit",compact('paymentU','payU','message','msg','notiF','notification','search','Invoice','Parcel','devices','sale','purchase','profit','search'));
        
            }
 
@@ -810,8 +860,11 @@ class reportingController extends Controller
         $notification = Notification::where('productId','!=',NULL)->orderBy('id','desc')->get();
           $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
+
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
           $devices = Invoices::where('totalPrice','!=','Devis')->where('status','=','Approuvé')->whereMonth('date', date('m'))->whereYear('date', date('Y'))->get();
-          return view("reporting.searchAdminCredit",compact('message','msg','notiF','notification','Invoice','Parcel','devices'));
+          return view("reporting.searchAdminCredit",compact('paymentU','payU','message','msg','notiF','notification','Invoice','Parcel','devices'));
       }
 
 
@@ -844,8 +897,11 @@ class reportingController extends Controller
            $message = Message::where('or_status','=','Admin')->orderBy('id','desc')->get();
            $msg = Message::first();
 
+            $paymentU = UserPayCreditsNoti::orderBy('id','desc')->get();
+        $payU = UserPayCreditsNoti::first();
+
           $devices = Invoices::whereBetween('userCreditDate',[$request->from_date , $request->to_date])->where('status','=','Approuvé')->where('Paid','=','Un d. Payé')->get();
-          return view("reporting.searchByDateAdminCredits",compact('message','msg','notiF','notification','sale','purchase','profit','from_date','to_date','Invoice','Parcel','devices'));
+          return view("reporting.searchByDateAdminCredits",compact('paymentU','payU','message','msg','notiF','notification','sale','purchase','profit','from_date','to_date','Invoice','Parcel','devices'));
 
           // dd($from_date , $to_date);
 

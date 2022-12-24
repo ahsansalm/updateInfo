@@ -251,7 +251,7 @@
                   </li>
                 <!-- my bill  -->
                 <li  class="has-sub {{ Request::is('MyBill') ? 'active':''; }}" >
-                    <a class="sidenav-item-link" href="{{url('/bil')}}">
+                    <a class="sidenav-item-link" href="{{url('/MyBill')}}">
                     <i class="fa fa-sticky-note" style="font-size:24px;color:white"></i>
                       <span class="nav-text">Mes factures</span> 
                       @if(isset($Invoice))

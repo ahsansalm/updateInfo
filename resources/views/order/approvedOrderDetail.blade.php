@@ -118,7 +118,7 @@
                             <th scope="row">4</th>
                             <td><h6>Demande de service :</h6></td>
                             <td hidden><input type="hidden" value="{{$device->serviceRequest}}" name="serviceId"></td>
-                            <td  colspan="2" id="serviceA">{{$device->servicedata->service}}</td>
+                            <td  colspan="2" id="serviceA">{{$device->service_id}}</td>
                             </tr>
                             <tr>
                             <th scope="row">5</th>
@@ -393,13 +393,15 @@ $(document).ready(function(){
          // for device in pay
          $("#pay").click(function () {
         var userId = $("#userId").text();
+        
+        var userId2 = $("#userId2").text();
         $.ajax({
                     url: '{{ url('/order/pay') }}',
                     type:'post',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                   data:{'userId':userId,},
+                   data:{'userId':userId,'userId2':userId2,},
                         success:function(success){   
                             if(success){
                                 toastr.success(success.message,'Vous avez payé cette commande!');
